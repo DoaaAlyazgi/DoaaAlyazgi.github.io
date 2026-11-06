@@ -196,8 +196,23 @@ main, header, footer { position: relative; z-index: 2; }
 /* ---------- stats ---------- */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-4); padding-block: var(--s-7) 0; }
 .stat { padding: var(--s-5); border-radius: var(--radius); background: var(--glass); border: 1px solid var(--line); min-width: 0; }
-.stat b { display: block; font: 800 clamp(2rem, 4vw, 3rem)/1 var(--f-display); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
-.stat span { color: var(--muted); font-size: .88rem; display: block; margin-top: .4rem; }
+.stat { position: relative; overflow: hidden; transition: border-color .3s, transform .3s var(--ease); cursor: default; }
+.stat:hover { border-color: var(--line-2); transform: translateY(-4px); }
+.stat::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .4s;
+  background: radial-gradient(260px circle at 20% 0%, rgba(255, 77, 109, .2), transparent 70%); }
+.stat.counting::before, .stat:hover::before { opacity: 1; }
+.stat::after { content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; transform-origin: left; transform: scaleX(var(--p, 1));
+  background: linear-gradient(90deg, var(--rose), var(--gold)); }
+.stat b { display: flex; align-items: baseline; gap: .06em; white-space: nowrap; font: 800 clamp(2.4rem, 5vw, 3.6rem)/1 var(--f-display); letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.stat .plus, .stat .unit { font-style: normal; display: inline-block; transform: scale(0) translateY(.2em); transform-origin: 30% 80%; transition: transform .6s cubic-bezier(.3, 1.8, .5, 1); }
+.stat .plus { color: var(--rose); font-size: .8em; }
+.stat .unit { color: var(--gold); font-size: .5em; letter-spacing: 0; margin-inline-start: .1em; }
+.stat.done .plus, .stat.done .unit { transform: none; }
+.stat.done .plus { animation: plusbeat 2.4s 1s ease-in-out infinite; }
+@keyframes plusbeat { 0%, 70%, 100% { transform: none; } 80% { transform: scale(1.35) rotate(90deg); } 90% { transform: scale(.95) rotate(90deg); } }
+.stat.counting .v { color: var(--gold); text-shadow: 0 0 24px rgba(255, 184, 77, .45); }
+.stat .v { transition: color .5s, text-shadow .5s; }
+.stat > span { color: var(--muted); font-size: .88rem; display: block; margin-top: .6rem; }
 @media (max-width: 760px) { .stats { grid-template-columns: 1fr 1fr; } }
 
 /* ---------- reveal on scroll (content stays visible without support) ---------- */
@@ -519,19 +534,13 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
     </div>
   </section>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="track">
-      <span>Offline-first</span><span>Flutter</span><span>Clean Architecture</span><span>Java</span><span>Algorithms</span><span>C++</span><span>React</span><span>TypeScript</span><span>Arabic RTL</span><span>Data Structures</span><span>SQL</span><span>Git</span>
-      <span>Offline-first</span><span>Flutter</span><span>Clean Architecture</span><span>Java</span><span>Algorithms</span><span>C++</span><span>React</span><span>TypeScript</span><span>Arabic RTL</span><span>Data Structures</span><span>SQL</span><span>Git</span>
-    </div>
-  </div>
 
   <div class="wrap">
     <div class="stats">
-      <div class="stat reveal"><b data-count="8">8</b><span>projects built or in progress</span></div>
-      <div class="stat reveal"><b data-count="6" id="factRepos">6</b><span>public GitHub repositories</span></div>
-      <div class="stat reveal"><b data-count="24" data-suffix="h">24h</b><span>IEEEXtreme 20.0 coding marathon</span></div>
-      <div class="stat reveal"><b>AR<span style="color:var(--rose)">·</span>EN</b><span>real right-to-left interfaces</span></div>
+      <div class="stat done"><b><span class="v" data-count="8">8</span><i class="plus">+</i></b><span>projects built, one live: Sanad</span></div>
+      <div class="stat done"><b><span class="v" data-count="6" id="factRepos">6</span><i class="plus">+</i></b><span>public GitHub repositories</span></div>
+      <div class="stat done"><b><span class="v" data-count="24">24</span><i class="unit">h</i></b><span>IEEEXtreme 20.0 coding marathon</span></div>
+      <div class="stat done"><b><span class="v" data-count="2">2</span><i class="unit">lang</i></b><span>Arabic RTL + English interfaces</span></div>
     </div>
   </div>
 
@@ -971,12 +980,20 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
 
   /* ---------- count up ---------- */
   const io = (fn, opts) => { const o = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { fn(e.target); o.unobserve(e.target); } }), opts || { threshold: .4 }); return o; };
-  const counter = io((el) => {
-    if (reduce) return;
-    const end = +el.dataset.count, suf = el.dataset.suffix || "", t0 = performance.now();
-    const tick = (t) => { const p = Math.min(1, (t - t0) / 1400), e = 1 - Math.pow(1 - p, 3); el.textContent = Math.round(end * e) + suf; if (p < 1) requestAnimationFrame(tick); };
+  // count 0 → N, light the card while counting, then pop the "+" in
+  const countStat = (stat) => {
+    if (reduce || stat.classList.contains("counting")) return;
+    const el = $(".v", stat), end = +el.dataset.count, t0 = performance.now(), dur = 1300 + end * 25;
+    stat.classList.remove("done"); stat.classList.add("counting");
+    const tick = (t) => {
+      const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 4);
+      el.textContent = Math.round(end * e); stat.style.setProperty("--p", e.toFixed(3));
+      if (p < 1) requestAnimationFrame(tick); else { stat.classList.remove("counting"); stat.classList.add("done"); }
+    };
     requestAnimationFrame(tick);
-  });
+  };
+  const counter = io((el) => countStat(el.closest(".stat")));
+  $$(".stat").forEach((s) => s.addEventListener("pointerenter", () => countStat(s)));
   $$("[data-count]").forEach((el) => counter.observe(el));
 
   /* ---------- Mudabbir demo ---------- */
@@ -1119,7 +1136,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
 
   function render(data) {
     const repos = [...data.repos].sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
-    const fr = $("#factRepos"); fr.dataset.count = repos.length; fr.textContent = repos.length;
+    const fr = $("#factRepos"); fr.dataset.count = repos.length; if (!fr.closest(".stat").classList.contains("counting")) fr.textContent = repos.length;
     $("#repos").innerHTML = repos.map((r, i) => {
       const col = LANG_COLORS[r.language] || "#9da0ad";
       return `<a class="repo" style="--i:${i}" href="https://github.com/${USER}/${esc(r.name)}" target="_blank" rel="noopener">
