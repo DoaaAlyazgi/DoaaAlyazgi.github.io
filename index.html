@@ -165,7 +165,7 @@ main, header, footer { position: relative; z-index: 2; }
 /* ---------- hero: tech network graph ---------- */
 .net { position: relative; container-type: inline-size; width: 100%; max-width: 560px; aspect-ratio: 1; justify-self: center; min-width: 0; perspective: 1100px; animation: pop 1.2s .3s var(--ease) both; }
 @keyframes pop { from { opacity: 0; transform: scale(.9); filter: blur(8px); } }
-.net-stage { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateX(var(--tx, 0deg)) rotateY(var(--ty, 0deg)); transition: transform .6s var(--ease); }
+.net-stage { position: absolute; inset: 0; transform: rotateX(var(--tx, 0deg)) rotateY(var(--ty, 0deg)); transition: transform .6s var(--ease); }
 .net-glow { position: absolute; inset: 12%; border-radius: 50%; pointer-events: none;
   background: radial-gradient(circle, rgba(139, 123, 255, .3), rgba(255, 77, 109, .14) 45%, transparent 70%); filter: blur(12px); animation: breathe 6s ease-in-out infinite; }
 @keyframes breathe { 50% { transform: scale(1.08); opacity: .75; } }
@@ -179,9 +179,8 @@ main, header, footer { position: relative; z-index: 2; }
 .pulse { fill: #fff; }
 .core {
   position: absolute; left: 50%; top: 50%; width: 32%; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; text-align: center;
-  transform: translate(-50%, -50%) translateZ(30px); padding: 6%;
-  background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, .14), rgba(16, 19, 30, .92) 62%); border: 1px solid var(--line-2);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  transform: translate(-50%, -50%); padding: 6%;
+  background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, .14), rgba(16, 19, 30, .96) 62%); border: 1px solid var(--line-2);
   box-shadow: 0 0 70px -12px rgba(255, 77, 109, .55), inset 0 0 30px rgba(139, 123, 255, .25);
 }
 .core::before {
@@ -196,13 +195,13 @@ main, header, footer { position: relative; z-index: 2; }
 .node {
   position: absolute; left: 50%; top: 50%; z-index: 2; display: inline-flex; align-items: center; gap: .45rem; white-space: nowrap;
   padding: .5rem .8rem; border-radius: 999px; font: 600 clamp(.66rem, 2.5cqw, .84rem)/1 var(--f-mono); color: var(--fg); cursor: pointer;
-  background: rgba(16, 19, 30, .72); border: 1px solid var(--line-2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  transform: translate(-50%, -50%) translateZ(var(--z, 20px));
+  background: rgba(16, 19, 30, .9); border: 1px solid var(--line-2);
+  transform: translate(-50%, -50%) translate(var(--px, 0px), var(--py, 0px));
   transition: transform .45s var(--ease), border-color .35s, box-shadow .35s, background .35s;
 }
 .node i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); flex: none; }
 .node.on {
-  transform: translate(-50%, -50%) translateZ(90px) scale(1.14); z-index: 3;
+  transform: translate(-50%, -50%) translate(var(--px, 0px), var(--py, 0px)) scale(1.14); z-index: 3;
   border-color: var(--c); background: rgba(24, 28, 42, .82);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 18%, transparent), 0 18px 46px -10px color-mix(in srgb, var(--c) 70%, transparent);
 }
@@ -1043,14 +1042,16 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
       const hero = net.closest(".hero");
       hero.addEventListener("pointermove", (ev) => {
         const r = net.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width - .5, y = (ev.clientY - r.top) / r.height - .5;
-        stage.style.setProperty("--ty", (x * 14).toFixed(2) + "deg"); stage.style.setProperty("--tx", (-y * 14).toFixed(2) + "deg");
+        stage.style.setProperty("--ty", (x * 10).toFixed(2) + "deg"); stage.style.setProperty("--tx", (-y * 10).toFixed(2) + "deg");
+        NODES.forEach((n) => { n.el.style.setProperty("--px", (x * n.z * .5).toFixed(1) + "px"); n.el.style.setProperty("--py", (y * n.z * .5).toFixed(1) + "px"); });
       });
-      hero.addEventListener("pointerleave", () => { stage.style.setProperty("--ty", "0deg"); stage.style.setProperty("--tx", "0deg"); });
+      hero.addEventListener("pointerleave", () => { stage.style.setProperty("--ty", "0deg"); stage.style.setProperty("--tx", "0deg"); NODES.forEach((n) => { n.el.style.setProperty("--px", "0px"); n.el.style.setProperty("--py", "0px"); }); });
     }
     // animation loop: drift nodes, redraw edges, move pulses
     const pos = NODES.map(() => [50, 50]);
-    let running = true;
-    const io2 = new IntersectionObserver(([en]) => { running = en.isIntersecting; if (running && !reduce) requestAnimationFrame(frame); });
+    let running = true, looping = false;
+    const start = () => { if (!looping && running && !reduce && !document.hidden) { looping = true; requestAnimationFrame(frame); } };
+    const io2 = new IntersectionObserver(([en]) => { running = en.isIntersecting; start(); });
     io2.observe(net);
     function layout(t) {
       NODES.forEach((n, i) => {
@@ -1079,12 +1080,12 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
         p.el.style.fill = hot ? C.gold : "#ffffff";
         p.el.style.opacity = (Math.sin(p.t * Math.PI) * (hot ? 1 : .7)).toFixed(2);
       });
-      if (running && !reduce && !document.hidden) requestAnimationFrame(frame);
+      if (running && !reduce && !document.hidden) requestAnimationFrame(frame); else looping = false;
     }
     layout(0);
     pulses.forEach((p) => p.el.style.opacity = 0);
-    if (!reduce) requestAnimationFrame(frame);
-    document.addEventListener("visibilitychange", () => { if (!document.hidden && running && !reduce) requestAnimationFrame(frame); });
+    start();
+    document.addEventListener("visibilitychange", start);
   })();
 
   /* ---------- count up ---------- */
