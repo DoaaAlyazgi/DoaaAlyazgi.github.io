@@ -162,26 +162,68 @@ main, header, footer { position: relative; z-index: 2; }
 @keyframes sheen { 40%, 100% { transform: translateX(120%); } }
 .btn svg { width: 18px; height: 18px; flex: none; position: relative; }
 
-.loom-wrap { position: relative; container-type: inline-size; min-width: 0; aspect-ratio: 1; max-width: 100%; animation: pop 1.4s .3s var(--ease) both; }
-@keyframes pop { from { opacity: 0; transform: scale(.85) rotate(-8deg); } }
-.loom-wrap::before {
-  content: ""; position: absolute; inset: 6%; border-radius: 50%;
-  background: conic-gradient(from 0deg, var(--rose), var(--gold), var(--violet), var(--olive), var(--rose));
-  filter: blur(40px); opacity: .35; animation: spin 14s linear infinite;
+/* ---------- hero: tech network graph ---------- */
+.net { position: relative; container-type: inline-size; width: 100%; max-width: 560px; aspect-ratio: 1; justify-self: center; min-width: 0; perspective: 1100px; animation: pop 1.2s .3s var(--ease) both; }
+@keyframes pop { from { opacity: 0; transform: scale(.9); filter: blur(8px); } }
+.net-stage { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateX(var(--tx, 0deg)) rotateY(var(--ty, 0deg)); transition: transform .6s var(--ease); }
+.net-glow { position: absolute; inset: 12%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(139, 123, 255, .3), rgba(255, 77, 109, .14) 45%, transparent 70%); filter: blur(12px); animation: breathe 6s ease-in-out infinite; }
+@keyframes breathe { 50% { transform: scale(1.08); opacity: .75; } }
+.net svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.net .rings { transform-box: view-box; transform-origin: 50% 50%; animation: spin 90s linear infinite; }
+.net .rings circle { fill: none; stroke: rgba(255, 255, 255, .08); stroke-width: .2; }
+.net .rings circle.dash { stroke-dasharray: .6 1.6; stroke: rgba(255, 255, 255, .14); }
+.edge { stroke: rgba(255, 255, 255, .13); stroke-width: .22; transition: stroke .35s, stroke-width .35s; }
+.edge.spoke { stroke: rgba(139, 123, 255, .28); }
+.edge.hot { stroke: var(--gold); stroke-width: .42; }
+.pulse { fill: #fff; }
+.core {
+  position: absolute; left: 50%; top: 50%; width: 32%; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; text-align: center;
+  transform: translate(-50%, -50%) translateZ(30px); padding: 6%;
+  background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, .14), rgba(16, 19, 30, .92) 62%); border: 1px solid var(--line-2);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 70px -12px rgba(255, 77, 109, .55), inset 0 0 30px rgba(139, 123, 255, .25);
 }
-.ring { position: absolute; inset: 4%; border-radius: 50%; border: 1px dashed var(--line-2); animation: spin 60s linear infinite reverse; }
-#loom { position: absolute; inset: 15%; width: 70%; height: 70%; animation: spin 90s linear infinite; }
-.orbit { position: absolute; inset: 0; animation: spin 30s linear infinite; }
-.orbit span {
-  position: absolute; left: 50%; top: 50%; white-space: nowrap; font: 600 .78rem/1 var(--f-mono);
-  translate: -50% -50%; transform: rotate(var(--a)) translate(44cqw) rotate(calc(-1 * var(--a)));
+.core::before {
+  content: ""; position: absolute; inset: -5px; border-radius: 50%; padding: 2px;
+  background: conic-gradient(from 0deg, transparent 0 40%, var(--rose), var(--gold), transparent 75%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: spin 5s linear infinite;
 }
-.orbit span b { display: inline-block; animation: spin 30s linear infinite reverse; font-weight: 600; padding: .45rem .75rem; border-radius: 999px; background: rgba(18, 21, 31, .85); border: 1px solid var(--line-2); backdrop-filter: blur(8px); }
-.loom-cap { position: absolute; bottom: -4%; left: 0; right: 0; text-align: center; color: var(--muted); font-size: .95rem; }
+.core small { display: block; font: 600 clamp(.5rem, 1.9cqw, .7rem)/1 var(--f-mono); color: var(--gold); letter-spacing: .08em; margin-bottom: .45em; }
+.core b { display: block; font: 800 clamp(.72rem, 3.3cqw, 1.15rem)/1.12 var(--f-display); letter-spacing: -.01em; }
+.core span { display: block; font: 500 clamp(.6rem, 2.4cqw, .85rem)/1.3 var(--f-body); color: var(--muted); margin-top: .25em; }
+.node {
+  position: absolute; left: 50%; top: 50%; z-index: 2; display: inline-flex; align-items: center; gap: .45rem; white-space: nowrap;
+  padding: .5rem .8rem; border-radius: 999px; font: 600 clamp(.66rem, 2.5cqw, .84rem)/1 var(--f-mono); color: var(--fg); cursor: pointer;
+  background: rgba(16, 19, 30, .72); border: 1px solid var(--line-2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  transform: translate(-50%, -50%) translateZ(var(--z, 20px));
+  transition: transform .45s var(--ease), border-color .35s, box-shadow .35s, background .35s;
+}
+.node i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); flex: none; }
+.node.on {
+  transform: translate(-50%, -50%) translateZ(90px) scale(1.14); z-index: 3;
+  border-color: var(--c); background: rgba(24, 28, 42, .82);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 18%, transparent), 0 18px 46px -10px color-mix(in srgb, var(--c) 70%, transparent);
+}
+.tip {
+  position: absolute; top: calc(100% + 10px); left: 50%; transform: translate(-50%, 6px); opacity: 0; pointer-events: none;
+  display: grid; gap: .2rem; padding: .55rem .75rem; border-radius: 12px; text-align: left; white-space: nowrap;
+  background: rgba(10, 12, 20, .92); border: 1px solid color-mix(in srgb, var(--c) 55%, transparent);
+  box-shadow: 0 16px 40px -14px rgba(0, 0, 0, .9); transition: opacity .3s, transform .35s var(--ease);
+}
+.tip b { font: 700 .78rem/1.2 var(--f-body); color: #fff; }
+.tip em { font: 500 .66rem/1.2 var(--f-mono); color: var(--c); font-style: normal; letter-spacing: .04em; text-transform: uppercase; }
+.node.tl .tip { left: 0; transform: translate(0, 6px); }
+.node.tr .tip { left: auto; right: 0; transform: translate(0, 6px); }
+.node.up .tip { top: auto; bottom: calc(100% + 10px); }
+.node.on .tip { opacity: 1; transform: translate(-50%, 0); }
+.node.on.tl .tip, .node.on.tr .tip { transform: none; }
 @media (max-width: 900px) {
   .hero .wrap { grid-template-columns: 1fr; }
-  .loom-wrap { width: min(400px, 92%); margin: var(--s-6) auto 0; }
+  .net { width: min(440px, 100%); margin: var(--s-5) auto 0; }
 }
+@media (max-width: 480px) { .node { padding: .4rem .6rem; } .tip b { font-size: .72rem; } }
 
 /* ---------- marquee ---------- */
 .marquee { position: relative; z-index: 2; border-block: 1px solid var(--line); overflow: hidden; padding-block: var(--s-4); background: rgba(11,13,20,.5);
@@ -519,17 +561,17 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
             LinkedIn</a>
         </div>
       </div>
-      <div class="loom-wrap" role="img" aria-label="A spinning tatreez cross-stitch star with my main skills orbiting it">
-        <div class="ring"></div>
-        <canvas id="loom" width="640" height="640"></canvas>
-        <div class="orbit" aria-hidden="true">
-          <span style="--a:-90deg"><b>Flutter</b></span>
-          <span style="--a:-18deg"><b>Java</b></span>
-          <span style="--a:54deg"><b>C++</b></span>
-          <span style="--a:126deg"><b>TypeScript</b></span>
-          <span style="--a:198deg"><b>Dart</b></span>
+      <div class="net" id="net" aria-label="My skills as a network: hover or tap a skill to see an achievement">
+        <div class="net-stage" id="netStage">
+          <div class="net-glow" aria-hidden="true"></div>
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <g class="rings"><circle cx="50" cy="50" r="38" class="dash"/><circle cx="50" cy="50" r="47"/><circle cx="50" cy="50" r="26"/></g>
+            <g id="edges"></g>
+            <g id="pulses"></g>
+          </svg>
+          <div class="core" aria-hidden="true"><div><small>{ core }</small><b>Software Engineering</b><span>&amp; Architecture</span></div></div>
+          <div id="nodes"></div>
         </div>
-        <div class="loom-cap" lang="ar" dir="rtl">كل غرزة سطر كود</div>
       </div>
     </div>
   </section>
@@ -931,51 +973,118 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
     document.addEventListener("visibilitychange", () => { if (!document.hidden && !reduce) requestAnimationFrame(draw); });
   })();
 
-  /* ---------- tatreez motif ---------- */
-  function stitch(ctx, x, y, s, color, w) {
-    const p = s * .16; ctx.strokeStyle = color; ctx.lineWidth = w; ctx.lineCap = "round";
-    ctx.beginPath(); ctx.moveTo(x + p, y + p); ctx.lineTo(x + s - p, y + s - p); ctx.moveTo(x + s - p, y + p); ctx.lineTo(x + p, y + s - p); ctx.stroke();
-  }
-  function motif(x, y, c) {
-    const dx = Math.abs(x - c), dy = Math.abs(y - c), d = dx + dy, m = Math.max(dx, dy);
-    if (d === 12) return 2;
-    if (d === 10 && dx % 2 === 0) return 4;
-    if (m <= 1) return 1;
-    if ((dx === 0 || dy === 0) && m <= 6) return 1;
-    if (dx === dy && dx <= 5) return 3;
-    if (d === 6 && m === 5) return 4;
-    if (dx === dy && dx === 7) return 2;
-    if ((dx === 0 || dy === 0) && m === 9) return 3;
-    if (m === 14 && (dx + dy) % 3 === 0) return 4;
-    return 0;
-  }
-  const PAL = [null, C.rose, C.fg, C.gold, C.olive];
-  (() => { // header mark
-    const cv = $("#mark"), ctx = cv.getContext("2d"), n = 7, s = cv.width / n;
-    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
-      const d = Math.abs(x - 3) + Math.abs(y - 3);
-      if (d === 3) stitch(ctx, x * s, y * s, s, C.gold, 2.6); else if (d <= 1) stitch(ctx, x * s, y * s, s, C.rose, 2.6);
-    }
+  /* ---------- header mark: a tiny node graph ---------- */
+  (() => {
+    const cv = $("#mark"), ctx = cv.getContext("2d"), c = cv.width / 2, r = cv.width * .36;
+    const pts = [...Array(6)].map((_, i) => [c + Math.cos(i * Math.PI / 3 - Math.PI / 2) * r, c + Math.sin(i * Math.PI / 3 - Math.PI / 2) * r]);
+    ctx.lineWidth = 2.2; ctx.strokeStyle = "rgba(255,184,77,.75)";
+    pts.forEach(([x, y], i) => { const [nx, ny] = pts[(i + 1) % 6]; ctx.beginPath(); ctx.moveTo(c, c); ctx.lineTo(x, y); ctx.lineTo(nx, ny); ctx.stroke(); });
+    pts.forEach(([x, y]) => { ctx.fillStyle = C.gold; ctx.beginPath(); ctx.arc(x, y, 4.2, 0, 7); ctx.fill(); });
+    ctx.fillStyle = C.rose; ctx.beginPath(); ctx.arc(c, c, 7.5, 0, 7); ctx.fill();
   })();
-  (() => { // hero loom
-    const cv = $("#loom"), ctx = cv.getContext("2d"), N = 29, s = cv.width / N, c = 14, cells = [];
-    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) { const v = motif(x, y, c); if (v) cells.push({ x, y, v, d: Math.hypot(x - c, y - c) }); }
-    cells.sort((a, b) => a.d - b.d);
-    let shown = reduce ? cells.length : 0, t0 = 0;
-    const draw = (t) => {
-      ctx.clearRect(0, 0, cv.width, cv.height);
-      const breathe = reduce ? 1 : 1 + Math.sin(t / 900) * .04;
-      for (let i = 0; i < shown; i++) {
-        const k = cells[i]; const wob = reduce ? 0 : Math.sin(t / 600 + k.d) * .6;
-        ctx.shadowColor = PAL[k.v]; ctx.shadowBlur = 8;
-        stitch(ctx, k.x * s + wob, k.y * s - wob, s, PAL[k.v], s * .17 * breathe);
+
+  /* ---------- hero: interactive tech network ---------- */
+  (() => {
+    const net = $("#net"); if (!net) return;
+    const stage = $("#netStage"), gE = $("#edges"), gP = $("#pulses"), host = $("#nodes");
+    const NS = "http://www.w3.org/2000/svg";
+    const NODES = [
+      { k: "Flutter", c: "#2fc4d8", a: -90, z: 50, tag: "Offline-First Specialist", sub: "Mudabbir · Hive + sync" },
+      { k: "Dart", c: "#5ad1a8", a: -30, z: 25, tag: "Clean Architecture", sub: "Riverpod · Freezed" },
+      { k: "C++", c: "#ff4d6d", a: 30, z: 60, tag: "PCPC 2026 · 2nd Place", sub: "competitive programming" },
+      { k: "Algorithms", c: "#ffb84d", a: 90, z: 35, tag: "IEEEXtreme 20.0", sub: "24-hour marathon" },
+      { k: "Java", c: "#ff8a4c", a: 150, z: 55, tag: "Prompt Optimizer", sub: "prefix sum · O(N) window" },
+      { k: "System Design", c: "#8b7bff", a: 210, z: 30, tag: "Sanad · live platform", sub: "PWA for Gaza's freelancers" }
+    ];
+    const R = 37;
+    // build nodes
+    NODES.forEach((n, i) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "node"; b.style.setProperty("--c", n.c); b.style.setProperty("--z", n.z + "px");
+      b.setAttribute("aria-label", `${n.k}: ${n.tag}, ${n.sub}`);
+      b.innerHTML = `<i></i>${n.k}<span class="tip"><em>${n.k} ★</em><b>${n.tag}</b><em style="color:var(--muted);text-transform:none;letter-spacing:0">${n.sub}</em></span>`;
+      host.appendChild(b); n.el = b; n.phase = i * 1.7;
+    });
+    // edges: spokes from the core + a ring between neighbours
+    const mkLine = (cls) => { const l = document.createElementNS(NS, "line"); l.setAttribute("class", "edge " + cls); gE.appendChild(l); return l; };
+    const edges = [];
+    NODES.forEach((n, i) => {
+      edges.push({ a: -1, b: i, el: mkLine("spoke") });
+      edges.push({ a: i, b: (i + 1) % NODES.length, el: mkLine("") });
+    });
+    // data pulses travelling along edges
+    const pulses = [];
+    edges.forEach((e, i) => {
+      const count = e.a === -1 ? 2 : 1;
+      for (let j = 0; j < count; j++) {
+        const c = document.createElementNS(NS, "circle"); c.setAttribute("class", "pulse"); c.setAttribute("r", e.a === -1 ? ".75" : ".5");
+        gP.appendChild(c); pulses.push({ e, el: c, t: (j / count + i * .137) % 1, sp: .0016 + (i % 3) * .0005 });
       }
-      ctx.shadowBlur = 0;
-      if (shown < cells.length) shown = Math.min(cells.length, shown + 3);
-      if (!reduce) requestAnimationFrame(draw);
+    });
+    let active = -1, manual = false, resume;
+    const setActive = (i) => {
+      active = i;
+      NODES.forEach((n, k) => n.el.classList.toggle("on", k === i));
+      edges.forEach((e) => e.el.classList.toggle("hot", i >= 0 && (e.a === i || e.b === i)));
     };
-    requestAnimationFrame(draw);
-    cv.parentElement.addEventListener("click", () => { if (!reduce) shown = 0; });
+    NODES.forEach((n, i) => {
+      n.el.addEventListener("pointerenter", () => { manual = true; clearTimeout(resume); setActive(i); });
+      n.el.addEventListener("pointerleave", () => { resume = setTimeout(() => { manual = false; }, 1600); });
+      n.el.addEventListener("focus", () => { manual = true; setActive(i); });
+      n.el.addEventListener("blur", () => { manual = false; });
+      n.el.addEventListener("click", () => { manual = true; clearTimeout(resume); setActive(active === i ? -1 : i); resume = setTimeout(() => { manual = false; }, 4000); });
+    });
+    // auto tour so visitors see the achievements without hovering
+    let tour = 0;
+    if (!reduce) setInterval(() => { if (!manual) { setActive(tour % NODES.length); tour++; } }, 2600);
+    else setActive(2);
+    // 3D tilt + parallax from the pointer
+    if (fine && !reduce) {
+      const hero = net.closest(".hero");
+      hero.addEventListener("pointermove", (ev) => {
+        const r = net.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width - .5, y = (ev.clientY - r.top) / r.height - .5;
+        stage.style.setProperty("--ty", (x * 14).toFixed(2) + "deg"); stage.style.setProperty("--tx", (-y * 14).toFixed(2) + "deg");
+      });
+      hero.addEventListener("pointerleave", () => { stage.style.setProperty("--ty", "0deg"); stage.style.setProperty("--tx", "0deg"); });
+    }
+    // animation loop: drift nodes, redraw edges, move pulses
+    const pos = NODES.map(() => [50, 50]);
+    let running = true;
+    const io2 = new IntersectionObserver(([en]) => { running = en.isIntersecting; if (running && !reduce) requestAnimationFrame(frame); });
+    io2.observe(net);
+    function layout(t) {
+      NODES.forEach((n, i) => {
+        const wob = reduce ? 0 : Math.sin(t / 2200 + n.phase) * 5;
+        const rr = R + (reduce ? 0 : Math.sin(t / 1700 + n.phase * 2) * 2.2);
+        const a = (n.a + wob + (reduce ? 0 : t / 900)) * Math.PI / 180;
+        const x = 50 + Math.cos(a) * rr, y = 50 + Math.sin(a) * rr;
+        pos[i] = [x, y];
+        n.el.style.left = x + "%"; n.el.style.top = y + "%";
+        n.el.classList.toggle("tl", x < 32); n.el.classList.toggle("tr", x > 68); n.el.classList.toggle("up", y > 66);
+      });
+      edges.forEach((e) => {
+        const [x1, y1] = e.a === -1 ? [50, 50] : pos[e.a], [x2, y2] = pos[e.b];
+        e.el.setAttribute("x1", x1); e.el.setAttribute("y1", y1); e.el.setAttribute("x2", x2); e.el.setAttribute("y2", y2);
+      });
+    }
+    let last = performance.now();
+    function frame(t) {
+      const dt = Math.min(50, t - last); last = t;
+      layout(t);
+      pulses.forEach((p) => {
+        const hot = active >= 0 && (p.e.a === active || p.e.b === active);
+        p.t = (p.t + p.sp * dt * (hot ? 2.4 : 1)) % 1;
+        const [x1, y1] = p.e.a === -1 ? [50, 50] : pos[p.e.a], [x2, y2] = pos[p.e.b];
+        p.el.setAttribute("cx", x1 + (x2 - x1) * p.t); p.el.setAttribute("cy", y1 + (y2 - y1) * p.t);
+        p.el.style.fill = hot ? C.gold : "#ffffff";
+        p.el.style.opacity = (Math.sin(p.t * Math.PI) * (hot ? 1 : .7)).toFixed(2);
+      });
+      if (running && !reduce && !document.hidden) requestAnimationFrame(frame);
+    }
+    layout(0);
+    pulses.forEach((p) => p.el.style.opacity = 0);
+    if (!reduce) requestAnimationFrame(frame);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden && running && !reduce) requestAnimationFrame(frame); });
   })();
 
   /* ---------- count up ---------- */
