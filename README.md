@@ -1,5 +1,5 @@
-# Doaa Alyazgi · Portfolio
+# Doaa AL Yazji · Portfolio
 
-My personal portfolio: offline-first apps, Java engines, competitive programming, and my live GitHub repositories.
+My developer portfolio, built like a code editor: Sanad, Mudabbir, Java engines, IEEEXtreme, live GitHub repos and a working terminal.
 
 Live at **https://doaaalyazgi.github.io**
