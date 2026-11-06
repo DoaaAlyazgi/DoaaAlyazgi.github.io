@@ -1,0 +1,1130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Doaa Alyazgi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Doaa Alyazgi, computer engineering student and software engineer from Palestine. Offline-first apps, Java engines, competitive programming.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a single dark night-sky scroll. Living thread canvas behind everything,
+   split hero (name + rotating thesis / spinning tatreez loom with orbiting skills),
+   tech marquee, sticky stacking project cards with animated mini-demos, then
+   competition, live GitHub, about, contact. One committed dark look. */
+:root {
+  --bg: #0b0d14;
+  --bg-2: #12151f;
+  --glass: rgba(255, 255, 255, .045);
+  --line: rgba(255, 255, 255, .09);
+  --line-2: rgba(255, 255, 255, .16);
+  --fg: #f1ece4;
+  --muted: #9da0ad;
+  --rose: #ff4d6d;        /* tatreez red, glowing */
+  --gold: #ffb84d;        /* thread gold */
+  --olive: #9fd27a;       /* online / synced */
+  --violet: #8b7bff;      /* depth */
+  --rose-soft: rgba(255, 77, 109, .14);
+  --olive-soft: rgba(159, 210, 122, .14);
+  --gold-soft: rgba(255, 184, 77, .14);
+  --code-bg: rgba(5, 6, 10, .65);
+
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-ar: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+
+  --s-1: .25rem; --s-2: .5rem; --s-3: .75rem; --s-4: 1rem; --s-5: 1.5rem; --s-6: 2rem; --s-7: 3rem; --s-8: 6rem;
+  --radius: 20px;
+  --maxw: 1200px;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--bg); overflow-x: clip; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 400 1rem/1.65 var(--f-body); -webkit-font-smoothing: antialiased; overflow-x: clip;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--bg); }
+/* film grain */
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: .07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+a { color: inherit; }
+::selection { background: var(--rose); color: #fff; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+.wrap {
+  position: relative; max-width: var(--maxw); margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+[lang="ar"] { font-family: var(--f-ar); letter-spacing: normal !important; line-height: 1.9; }
+.mono { font-family: var(--f-mono); }
+.label { font: 600 .72rem/1 var(--f-mono); text-transform: uppercase; letter-spacing: .14em; color: var(--muted); }
+h1, h2, h3, h4 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
+.grad {
+  background: linear-gradient(100deg, var(--rose) 0%, var(--gold) 45%, var(--rose) 90%);
+  background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* ---------- ambient layers ---------- */
+#threads { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.blob { position: fixed; z-index: 0; border-radius: 50%; filter: blur(90px); opacity: .35; pointer-events: none; }
+.blob.a { width: 46vw; height: 46vw; background: var(--rose); top: -14vw; right: -10vw; animation: drift 18s ease-in-out infinite alternate; opacity: .22; }
+.blob.b { width: 38vw; height: 38vw; background: var(--violet); bottom: -16vw; left: -12vw; animation: drift 22s ease-in-out infinite alternate-reverse; opacity: .2; }
+@keyframes drift { to { transform: translate(-8vw, 10vh) scale(1.15); } }
+main, header, footer { position: relative; z-index: 2; }
+#glow {
+  position: fixed; z-index: 1; width: 520px; height: 520px; left: 0; top: 0; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 77, 109, .16), transparent 62%); transform: translate(-50%, -50%);
+  transition: opacity .4s; opacity: 0;
+}
+#progress { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; height: 3px; width: 100%; z-index: 70; transform-origin: 0 50%; transform: scaleX(0);
+  background: linear-gradient(90deg, var(--rose), var(--gold)); }
+
+/* ---------- header ---------- */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 40;
+  background: rgba(11, 13, 20, .55); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-bottom: 1px solid var(--line);
+}
+.top .wrap { display: flex; align-items: center; gap: var(--s-4); height: 64px; }
+.brand { display: flex; align-items: center; gap: var(--s-3); text-decoration: none; font: 700 1.05rem/1 var(--f-display); }
+.brand canvas { width: 30px; height: 30px; animation: spin 18s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.nav { display: flex; gap: var(--s-2); margin-inline-start: auto; }
+.nav a {
+  position: relative; text-decoration: none; color: var(--muted); font-size: .9rem; padding: .45rem .8rem; border-radius: 999px; transition: color .25s, background .25s;
+}
+.nav a:hover, .nav a.on { color: var(--fg); background: var(--glass); }
+.hire {
+  display: inline-flex; align-items: center; gap: .5rem; padding: .55rem 1rem; border-radius: 999px; text-decoration: none; font: 600 .88rem/1 var(--f-body);
+  background: var(--fg); color: var(--bg);
+}
+.hire i { width: 7px; height: 7px; border-radius: 50%; background: #2fbf4f; box-shadow: 0 0 0 0 rgba(47, 191, 79, .6); animation: ping 2s infinite; }
+@keyframes ping { 70% { box-shadow: 0 0 0 8px rgba(47, 191, 79, 0); } 100% { box-shadow: 0 0 0 0 rgba(47, 191, 79, 0); } }
+@media (max-width: 820px) { .nav { display: none; } .hire { margin-inline-start: auto; } }
+
+/* ---------- hero ---------- */
+.hero { padding-block: clamp(3rem, 8vw, 6.5rem) var(--s-7); }
+.hero .wrap { display: grid; grid-template-columns: 1.2fr .8fr; gap: var(--s-6); align-items: center; }
+.hero-text { min-width: 0; }
+.pill {
+  display: inline-flex; align-items: center; gap: .55rem; padding: .45rem .85rem .45rem .5rem; border-radius: 999px;
+  border: 1px solid var(--line-2); background: var(--glass); font: 500 .82rem/1 var(--f-mono); color: var(--muted);
+}
+.pill b { font-weight: 600; color: var(--bg); background: var(--olive); padding: .25rem .5rem; border-radius: 999px; font-size: .7rem; }
+.name {
+  margin-top: var(--s-5); font-size: clamp(3.2rem, 9.5vw, 7.6rem); line-height: .9; font-weight: 800; letter-spacing: -.045em;
+}
+.name .ln { display: block; overflow: hidden; padding-bottom: .06em; }
+.name .ln.grad { background: none; animation: none; color: var(--fg); }
+.name .ln.grad .ch {
+  background: linear-gradient(100deg, var(--rose) 0%, var(--gold) 45%, var(--rose) 90%); background-size: 700% 100%;
+  background-position: calc(var(--i) * -40px) 0; -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.name .ch { display: inline-block; animation: up .9s var(--ease) both; animation-delay: calc(var(--i) * 45ms + 150ms); }
+@keyframes up { from { transform: translateY(105%) rotate(6deg); } to { transform: none; } }
+.thesis {
+  font: 500 clamp(1.25rem, 2.6vw, 1.9rem)/1.3 var(--f-display); letter-spacing: -.015em; margin: var(--s-5) 0 var(--s-4); max-width: 26ch;
+  animation: fade 1s .8s var(--ease) both;
+}
+.rot { position: relative; display: inline-block; color: var(--gold); white-space: nowrap; }
+.rot::after {
+  content: ""; position: absolute; left: -3%; right: -3%; top: 55%; height: 3px; border-radius: 3px; background: var(--rose);
+  transform: scaleX(0); transform-origin: left; transition: transform .45s var(--ease);
+}
+.rot.cut::after { transform: scaleX(1); }
+.rot.swap { animation: swap .5s var(--ease); }
+@keyframes swap { from { opacity: 0; transform: translateY(.5em); filter: blur(6px); } }
+.thesis em { font-style: normal; color: var(--rose); }
+.lede { color: var(--muted); max-width: 52ch; margin: 0 0 var(--s-6); animation: fade 1s 1s var(--ease) both; }
+.lede strong { color: var(--fg); font-weight: 500; }
+@keyframes fade { from { opacity: 0; transform: translateY(16px); } }
+.cta { display: flex; flex-wrap: wrap; gap: var(--s-3); animation: fade 1s 1.15s var(--ease) both; }
+.btn {
+  position: relative; display: inline-flex; align-items: center; gap: .55rem; padding: .85rem 1.25rem; border-radius: 999px; overflow: hidden;
+  font: 600 .95rem/1 var(--f-body); text-decoration: none; border: 1px solid var(--line-2); background: var(--glass); color: var(--fg); cursor: pointer;
+  transition: border-color .3s, background .3s; will-change: transform;
+}
+.btn:hover { border-color: var(--fg); }
+.btn.primary { background: linear-gradient(120deg, var(--rose), #ff7a59); border-color: transparent; color: #fff; box-shadow: 0 10px 40px -10px rgba(255, 77, 109, .7); }
+.btn.primary::before {
+  content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.45) 50%, transparent 70%);
+  transform: translateX(-120%); animation: sheen 3.5s 2s infinite;
+}
+@keyframes sheen { 40%, 100% { transform: translateX(120%); } }
+.btn svg { width: 18px; height: 18px; flex: none; position: relative; }
+
+.loom-wrap { position: relative; container-type: inline-size; min-width: 0; aspect-ratio: 1; max-width: 100%; animation: pop 1.4s .3s var(--ease) both; }
+@keyframes pop { from { opacity: 0; transform: scale(.85) rotate(-8deg); } }
+.loom-wrap::before {
+  content: ""; position: absolute; inset: 6%; border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--rose), var(--gold), var(--violet), var(--olive), var(--rose));
+  filter: blur(40px); opacity: .35; animation: spin 14s linear infinite;
+}
+.ring { position: absolute; inset: 4%; border-radius: 50%; border: 1px dashed var(--line-2); animation: spin 60s linear infinite reverse; }
+#loom { position: absolute; inset: 15%; width: 70%; height: 70%; animation: spin 90s linear infinite; }
+.orbit { position: absolute; inset: 0; animation: spin 30s linear infinite; }
+.orbit span {
+  position: absolute; left: 50%; top: 50%; white-space: nowrap; font: 600 .78rem/1 var(--f-mono);
+  translate: -50% -50%; transform: rotate(var(--a)) translate(44cqw) rotate(calc(-1 * var(--a)));
+}
+.orbit span b { display: inline-block; animation: spin 30s linear infinite reverse; font-weight: 600; padding: .45rem .75rem; border-radius: 999px; background: rgba(18, 21, 31, .85); border: 1px solid var(--line-2); backdrop-filter: blur(8px); }
+.loom-cap { position: absolute; bottom: -4%; left: 0; right: 0; text-align: center; color: var(--muted); font-size: .95rem; }
+@media (max-width: 900px) {
+  .hero .wrap { grid-template-columns: 1fr; }
+  .loom-wrap { width: min(400px, 92%); margin: var(--s-6) auto 0; }
+}
+
+/* ---------- marquee ---------- */
+.marquee { position: relative; z-index: 2; border-block: 1px solid var(--line); overflow: hidden; padding-block: var(--s-4); background: rgba(11,13,20,.5);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.track { display: flex; gap: var(--s-7); width: max-content; animation: slide 38s linear infinite; }
+.track span { display: inline-flex; align-items: center; gap: var(--s-7); font: 700 clamp(1.4rem, 3vw, 2.2rem)/1 var(--f-display); letter-spacing: -.02em; color: var(--muted); white-space: nowrap; }
+.track span::after { content: "✕"; font-size: .55em; color: var(--rose); }
+.track span:nth-child(3n+1) { color: var(--fg); }
+.marquee:hover .track { animation-play-state: paused; }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* ---------- stats ---------- */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-4); padding-block: var(--s-7) 0; }
+.stat { padding: var(--s-5); border-radius: var(--radius); background: var(--glass); border: 1px solid var(--line); min-width: 0; }
+.stat b { display: block; font: 800 clamp(2rem, 4vw, 3rem)/1 var(--f-display); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: .88rem; display: block; margin-top: .4rem; }
+@media (max-width: 760px) { .stats { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- reveal on scroll (content stays visible without support) ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
+    @keyframes reveal { from { opacity: 0; transform: translateY(50px) scale(.97); filter: blur(6px); } }
+  }
+}
+
+/* ---------- sections ---------- */
+section.block { padding-block: var(--s-8) 0; scroll-margin-top: 72px; }
+.sec-head { display: grid; grid-template-columns: 1fr 1.2fr; gap: var(--s-6); align-items: end; margin-bottom: var(--s-7); }
+.sec-head h2 { font-size: clamp(2.3rem, 5.4vw, 4.2rem); line-height: .98; letter-spacing: -.04em; font-weight: 800; }
+.sec-head p { color: var(--muted); margin: 0; max-width: 56ch; font-size: 1.05rem; }
+.sec-head .label { display: inline-flex; align-items: center; gap: .6rem; margin-bottom: var(--s-4); color: var(--rose); }
+.sec-head .label::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+@media (max-width: 760px) { .sec-head { grid-template-columns: 1fr; gap: var(--s-3); } }
+
+/* ---------- stacking project cards ---------- */
+.stack { display: grid; gap: var(--s-6); }
+.scard {
+  position: sticky; top: calc(84px + var(--n) * 18px);
+  display: grid; grid-template-columns: 1.05fr .95fr; border-radius: 28px; overflow: hidden;
+  background: linear-gradient(160deg, #161a27 0%, #0f121b 100%); border: 1px solid var(--line-2);
+  box-shadow: 0 -20px 60px -20px rgba(0,0,0,.8), 0 40px 80px -40px rgba(0,0,0,.9);
+  min-height: 460px;
+}
+.scard::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .55;
+  background: radial-gradient(600px circle at var(--mx, 80%) var(--my, 0%), var(--tint, rgba(255,77,109,.18)), transparent 60%);
+}
+.scard .body { position: relative; padding: clamp(1.5rem, 3vw, 2.75rem); min-width: 0; display: flex; flex-direction: column; gap: var(--s-4); }
+.scard .demo { position: relative; padding: clamp(1.25rem, 3vw, 2.5rem); min-width: 0; display: grid; place-items: center; border-inline-start: 1px solid var(--line); background: rgba(0,0,0,.18); }
+.scard .num { font: 600 .8rem/1 var(--f-mono); color: var(--muted); }
+.scard h3 { font-size: clamp(2rem, 4vw, 3.1rem); line-height: 1; letter-spacing: -.035em; font-weight: 800; }
+.scard h3 [lang="ar"] { font-size: .55em; color: var(--muted); font-weight: 600; margin-inline-start: .5rem; vertical-align: middle; }
+.scard p { margin: 0; color: var(--muted); max-width: 52ch; }
+.scard p strong { color: var(--fg); font-weight: 500; }
+.scard .foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); flex-wrap: wrap; }
+@media (max-width: 900px) {
+  .scard { position: relative; top: 0; grid-template-columns: 1fr; min-height: 0; }
+  .scard .demo { border-inline-start: 0; border-top: 1px solid var(--line); }
+}
+.kind { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+.tag { font: 600 .7rem/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; padding: .42rem .6rem; border-radius: 999px; background: var(--rose-soft); color: var(--rose); }
+.tag.olive { background: var(--olive-soft); color: var(--olive); }
+.tag.gold { background: var(--gold-soft); color: var(--gold); }
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0; padding: 0; list-style: none; }
+.chips li { font: 500 .76rem/1 var(--f-mono); padding: .45rem .65rem; border: 1px solid var(--line-2); border-radius: 999px; color: var(--muted); transition: color .2s, border-color .2s; }
+.chips li:hover { color: var(--fg); border-color: var(--rose); }
+.link { display: inline-flex; align-items: center; gap: .4rem; font: 600 .9rem/1 var(--f-body); text-decoration: none; padding: .6rem .9rem; border-radius: 999px; border: 1px solid var(--line-2); white-space: nowrap; transition: background .25s, color .25s, border-color .25s; }
+.link:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.link svg { width: 15px; height: 15px; transition: transform .25s; }
+.link:hover svg { transform: rotate(45deg); }
+.note { font: 500 .78rem/1.4 var(--f-mono); color: var(--muted); }
+
+/* demo: Mudabbir phone */
+.phone {
+  width: min(300px, 100%); border-radius: 34px; padding: 14px; background: #07080c; border: 1px solid var(--line-2);
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,.9), inset 0 0 0 6px #14161f; animation: float 6s ease-in-out infinite;
+}
+@keyframes float { 50% { transform: translateY(-10px) rotate(-1deg); } }
+.screen { border-radius: 24px; background: #0f121b; padding: 14px 12px; display: flex; flex-direction: column; gap: 10px; direction: rtl; min-height: 330px; }
+.sbar { display: flex; justify-content: space-between; font-size: .72rem; color: var(--muted); }
+.sbar b { font: 700 1rem/1.4 var(--f-ar); color: var(--fg); }
+.banner { display: flex; align-items: center; gap: .45rem; padding: .5rem .65rem; border-radius: 12px; font-size: .8rem; background: var(--gold-soft); color: var(--gold); transition: background .4s, color .4s; }
+.banner.on { background: var(--olive-soft); color: var(--olive); }
+.banner i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex: none; }
+.svc { display: flex; flex-direction: column; gap: 2px; padding: .6rem .7rem; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid var(--line); }
+.svc b { font-weight: 600; font-size: .86rem; }
+.svc small { color: var(--muted); font-size: .72rem; transition: color .4s; }
+.banner.on ~ .svc small { color: var(--olive); }
+.svc.blink-ok { animation: flash .9s var(--ease); }
+@keyframes flash { 30% { background: var(--olive-soft); border-color: var(--olive); } }
+.switch { display: inline-flex; align-items: center; gap: .6rem; cursor: pointer; font: 500 .82rem/1 var(--f-mono); color: var(--muted); margin-top: var(--s-4); }
+.switch input { appearance: none; -webkit-appearance: none; width: 44px; height: 24px; border-radius: 999px; background: var(--line-2); position: relative; cursor: pointer; margin: 0; transition: background .3s; }
+.switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--fg); transition: transform .3s var(--ease); }
+.switch input:checked { background: var(--olive); }
+.switch input:checked::after { transform: translateX(20px); }
+.democol { display: flex; flex-direction: column; align-items: center; width: 100%; }
+
+/* demo: token window */
+.tokens { width: 100%; display: flex; flex-direction: column; gap: var(--s-4); }
+.msgs { display: flex; flex-wrap: wrap; gap: 6px; }
+.msg { height: 34px; border-radius: 8px; background: rgba(139,123,255,.22); border: 1px solid rgba(139,123,255,.35); transition: opacity .6s var(--ease), transform .6s var(--ease), filter .6s; flex: 1 1 var(--w); display: grid; place-items: center; font: 600 .62rem/1 var(--f-mono); color: rgba(255,255,255,.55); }
+.msg.pin { background: var(--rose-soft); border-color: var(--rose); color: var(--rose); }
+.msg.new { background: var(--olive-soft); border-color: var(--olive); color: var(--olive); }
+.msg.out { opacity: .12; transform: scale(.9); filter: grayscale(1); }
+.meter { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); flex-wrap: wrap; }
+.meter b { font: 800 clamp(2.2rem, 5vw, 3.4rem)/1 var(--f-display); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.meter b small { font-size: .35em; color: var(--muted); font-weight: 500; letter-spacing: 0; }
+.bar { height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.bar span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--olive), var(--gold), var(--rose)); transition: width 1.2s var(--ease); }
+.legend { display: flex; gap: var(--s-4); flex-wrap: wrap; font: 500 .74rem/1 var(--f-mono); color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-inline-end: .35rem; vertical-align: -1px; }
+
+/* demo: recommendations */
+.recs { width: 100%; display: grid; gap: var(--s-3); }
+.rec { display: grid; grid-template-columns: 1fr auto; gap: .45rem var(--s-3); padding: var(--s-4); border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid var(--line); opacity: 0; transform: translateX(30px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.rec.in { opacity: 1; transform: none; }
+.rec b { font-weight: 600; }
+.rec .score { font: 700 .95rem/1 var(--f-mono); color: var(--gold); font-variant-numeric: tabular-nums; }
+.rec .bar { grid-column: 1 / -1; }
+.rec small { grid-column: 1 / -1; color: var(--muted); font-size: .78rem; }
+.recs.static .rec { opacity: 1; transform: none; }
+
+/* demo: wallet */
+.wallet { width: min(340px, 100%); display: flex; flex-direction: column; gap: var(--s-3); }
+.wcard { border-radius: 20px; padding: var(--s-5); background: linear-gradient(135deg, #ff4d6d, #8b7bff); color: #fff; position: relative; overflow: hidden; box-shadow: 0 20px 50px -20px rgba(255,77,109,.6); }
+.wcard::after { content: ""; position: absolute; width: 180px; height: 180px; border-radius: 50%; border: 30px solid rgba(255,255,255,.12); right: -60px; top: -60px; }
+.wcard small { opacity: .8; font: 500 .74rem/1 var(--f-mono); }
+.wcard b { display: block; font: 800 2.2rem/1.1 var(--f-display); font-variant-numeric: tabular-nums; margin-top: .3rem; }
+.tx { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); padding: .7rem .9rem; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid var(--line); font-size: .86rem; animation: txin .6s var(--ease) both; }
+@keyframes txin { from { opacity: 0; transform: translateY(-12px) scale(.96); } }
+.tx .st { font: 600 .66rem/1 var(--f-mono); padding: .3rem .45rem; border-radius: 999px; background: var(--gold-soft); color: var(--gold); white-space: nowrap; }
+.tx .st.ok { background: var(--olive-soft); color: var(--olive); }
+.tx .amt { font: 600 .86rem/1 var(--f-mono); font-variant-numeric: tabular-nums; }
+
+/* ---------- small cards ---------- */
+.mini { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-4); margin-top: var(--s-6); }
+@media (max-width: 900px) { .mini { grid-template-columns: 1fr; } }
+.tilt {
+  position: relative; border-radius: var(--radius); padding: var(--s-5); background: var(--glass); border: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: var(--s-3); min-width: 0; overflow: hidden;
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .3s var(--ease), border-color .3s;
+}
+.tilt::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s;
+  background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 184, 77, .14), transparent 55%); }
+.tilt:hover { border-color: var(--line-2); }
+.tilt:hover::before { opacity: 1; }
+.tilt h3 { font-size: 1.5rem; letter-spacing: -.02em; }
+.tilt h3 [lang="ar"] { font-size: .7em; color: var(--muted); }
+.tilt p { margin: 0; color: var(--muted); font-size: .95rem; }
+.tilt .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); flex-wrap: wrap; padding-top: var(--s-2); }
+.chapters { display: flex; gap: 4px; }
+.chapters i { flex: 1; height: 26px; border-radius: 5px; background: var(--gold-soft); border: 1px solid rgba(255,184,77,.25); animation: book 3s ease-in-out infinite; animation-delay: calc(var(--i) * 120ms); transform-origin: bottom; }
+@keyframes book { 50% { transform: scaleY(.45); background: var(--rose-soft); } }
+.cup { font: 700 2rem/1.2 "Aref Ruqaa", var(--f-ar); color: var(--gold); }
+.typing { font: 500 .82rem/1.4 var(--f-mono); color: var(--olive); }
+.typing::after { content: "▍"; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ---------- competition ---------- */
+.comp { display: grid; grid-template-columns: .9fr 1.1fr; gap: var(--s-6); align-items: start; }
+@media (max-width: 900px) { .comp { grid-template-columns: 1fr; } }
+.comp-text { min-width: 0; }
+.comp-text h3 { font-size: clamp(2rem, 4vw, 2.8rem); letter-spacing: -.03em; margin: var(--s-3) 0; }
+.steps { list-style: none; padding: 0; margin: var(--s-5) 0 0; display: grid; gap: var(--s-4); counter-reset: s; }
+.steps li { display: grid; grid-template-columns: 2.4rem 1fr; gap: var(--s-3); color: var(--muted); }
+.steps li::before { counter-increment: s; content: counter(s, decimal-leading-zero); font: 700 .78rem/2.4rem var(--f-mono); text-align: center; height: 2.4rem; border-radius: 12px; background: var(--rose-soft); color: var(--rose); }
+.steps b { color: var(--fg); font-weight: 600; }
+.code { min-width: 0; border-radius: var(--radius); background: var(--code-bg); border: 1px solid var(--line-2); overflow: hidden; box-shadow: 0 40px 80px -40px rgba(255,77,109,.35); }
+.code header { display: flex; align-items: center; gap: var(--s-3); padding: .8rem 1rem; border-bottom: 1px solid var(--line); }
+.dots { display: flex; gap: 6px; }
+.dots i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; }
+.dots i:nth-child(2) { background: #febc2e; } .dots i:nth-child(3) { background: #28c840; }
+.code header .label { margin-inline-start: auto; }
+.code pre { margin: 0; padding: 1.2rem; overflow-x: auto; font: 400 .8rem/1.75 var(--f-mono); color: var(--fg); min-height: 21em; }
+.code .c { color: #6f7486; } .code .k { color: var(--rose); } .code .n { color: var(--gold); } .code .t { color: var(--violet); }
+.guides { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); margin-top: var(--s-5); }
+@media (max-width: 600px) { .guides { grid-template-columns: 1fr; } }
+.guides h4 { font: 700 1.15rem/1.6 var(--f-ar); }
+.guides .tilt h4.en { font-family: var(--f-display); }
+
+/* ---------- github ---------- */
+.gh { border-radius: 28px; padding: clamp(1.25rem, 3vw, 2.5rem); background: var(--glass); border: 1px solid var(--line); }
+.gh-top { display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); flex-wrap: wrap; margin-bottom: var(--s-5); }
+.who { display: flex; align-items: center; gap: var(--s-3); }
+.who svg { width: 42px; height: 42px; }
+.who b { display: block; font: 700 1.2rem/1.2 var(--f-display); }
+.who small { color: var(--muted); font-family: var(--f-mono); font-size: .8rem; }
+.sync { display: inline-flex; align-items: center; gap: .55rem; padding: .55rem .85rem; border-radius: 999px; font: 500 .8rem/1.2 var(--f-mono); background: var(--gold-soft); color: var(--gold); }
+.sync i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
+.sync.live { background: var(--olive-soft); color: var(--olive); }
+.sync.live i { animation: ping2 1.8s infinite; }
+@keyframes ping2 { 0% { box-shadow: 0 0 0 0 rgba(159,210,122,.6); } 70%, 100% { box-shadow: 0 0 0 8px rgba(159,210,122,0); } }
+.sync.loading i { animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: .2; } }
+.langbar { display: flex; height: 12px; border-radius: 999px; overflow: hidden; background: var(--line); gap: 3px; }
+.langbar span { display: block; height: 100%; min-width: 4px; transform-origin: left; animation: grow 1.4s var(--ease) both; }
+@keyframes grow { from { transform: scaleX(0); } }
+.langs { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); margin: var(--s-3) 0 var(--s-5); padding: 0; list-style: none; font-size: .85rem; color: var(--muted); }
+.langs li { display: inline-flex; align-items: center; gap: .45rem; }
+.langs i { width: 10px; height: 10px; border-radius: 3px; }
+.langs b { color: var(--fg); font-weight: 600; font-variant-numeric: tabular-nums; }
+.repos { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-3); }
+@media (max-width: 760px) { .repos { grid-template-columns: 1fr; } }
+.repo { padding: var(--s-4) var(--s-5); border-radius: 16px; border: 1px solid var(--line); background: rgba(0,0,0,.2); text-decoration: none; display: flex; flex-direction: column; gap: .5rem; min-width: 0; animation: fade .7s var(--ease) both; animation-delay: calc(var(--i) * 80ms); transition: border-color .25s, transform .25s; }
+.repo:hover { border-color: var(--rose); transform: translateY(-4px); }
+.rname { font: 600 .98rem/1.3 var(--f-mono); overflow-wrap: anywhere; display: flex; align-items: center; gap: .5rem; }
+.rname svg { width: 16px; height: 16px; color: var(--muted); flex: none; }
+.rdesc { color: var(--muted); font-size: .88rem; }
+.rmeta { display: flex; gap: var(--s-4); font: 400 .76rem/1 var(--f-mono); color: var(--muted); flex-wrap: wrap; margin-top: auto; font-variant-numeric: tabular-nums; }
+.rmeta .dot { display: inline-flex; align-items: center; gap: .35rem; }
+.rmeta .dot i { width: 9px; height: 9px; border-radius: 50%; }
+
+/* ---------- about ---------- */
+.about { display: grid; grid-template-columns: 1.1fr .9fr; gap: var(--s-7); }
+@media (max-width: 900px) { .about { grid-template-columns: 1fr; gap: var(--s-6); } }
+.about-text { min-width: 0; }
+.about-text .big { font: 500 clamp(1.3rem, 2.4vw, 1.75rem)/1.4 var(--f-display); letter-spacing: -.015em; margin: 0 0 var(--s-5); }
+.about-text .big em { font-style: normal; color: var(--gold); }
+.about-text p { color: var(--muted); max-width: 60ch; margin: 0 0 var(--s-4); }
+.timeline { list-style: none; padding: 0; margin: var(--s-6) 0 0; position: relative; }
+.timeline::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 2px; background: linear-gradient(var(--rose), var(--gold), var(--violet)); border-radius: 2px; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .timeline::before { transform-origin: top; animation: grow-y linear both; animation-timeline: view(); animation-range: entry 10% cover 55%; }
+    @keyframes grow-y { from { transform: scaleY(0); } }
+  }
+}
+.timeline li { position: relative; padding: 0 0 var(--s-5) var(--s-6); }
+.timeline li::before { content: ""; position: absolute; left: 0; top: .35rem; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--gold); }
+.timeline time { font: 600 .75rem/1 var(--f-mono); color: var(--gold); display: block; margin-bottom: .35rem; letter-spacing: .06em; text-transform: uppercase; }
+.kit { display: grid; gap: var(--s-4); min-width: 0; align-content: start; }
+.kit > div { padding: var(--s-5); border-radius: var(--radius); background: var(--glass); border: 1px solid var(--line); }
+.kit h4 { margin: 0 0 var(--s-3); }
+.chips li.hi { border-color: rgba(255,77,109,.6); color: var(--fg); background: var(--rose-soft); }
+
+/* ---------- contact ---------- */
+.contact { padding-block: var(--s-8); }
+.cbox { position: relative; overflow: hidden; border-radius: 36px; padding: clamp(2rem, 6vw, 5rem) clamp(1.25rem, 5vw, 4rem); border: 1px solid var(--line-2);
+  background: radial-gradient(800px circle at 0% 0%, rgba(255,77,109,.28), transparent 55%), radial-gradient(700px circle at 100% 100%, rgba(139,123,255,.25), transparent 55%), #10131c; }
+.cbox h2 { font-size: clamp(2.6rem, 8vw, 6.4rem); line-height: .92; letter-spacing: -.05em; font-weight: 800; max-width: 12ch; }
+.mail { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; margin: var(--s-6) 0; }
+.mail code { font: 500 clamp(1rem, 2.6vw, 1.5rem)/1.3 var(--f-mono); user-select: all; overflow-wrap: anywhere; padding: .6rem 1rem; border-radius: 14px; background: rgba(0,0,0,.3); border: 1px solid var(--line); }
+.socials { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-3); }
+@media (max-width: 700px) { .socials { grid-template-columns: 1fr; } }
+.social { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-4) var(--s-5); border-radius: 18px; border: 1px solid var(--line-2); background: rgba(0,0,0,.25); text-decoration: none; min-width: 0; transition: background .3s, border-color .3s, transform .3s var(--ease); }
+.social:hover { background: var(--fg); color: var(--bg); transform: translateY(-4px); }
+.social:hover small { color: var(--bg); opacity: .7; }
+.social svg { width: 26px; height: 26px; flex: none; }
+.social div { min-width: 0; }
+.social b { display: block; font-weight: 600; }
+.social small { color: var(--muted); font-family: var(--f-mono); font-size: .76rem; overflow-wrap: anywhere; }
+footer { border-top: 1px solid var(--line); padding-block: var(--s-5); color: var(--muted); font-size: .85rem; }
+footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap; }
+
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); opacity: 0; background: var(--fg); color: var(--bg);
+  padding: .65rem 1.1rem; border-radius: 999px; font-size: .88rem; pointer-events: none; transition: opacity .25s, transform .25s var(--ease); z-index: 80; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress" aria-hidden="true"></div>
+<canvas id="threads" aria-hidden="true"></canvas>
+<div class="blob a" aria-hidden="true"></div>
+<div class="blob b" aria-hidden="true"></div>
+<div id="glow" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Doaa Alyazgi, back to top"><canvas id="mark" width="60" height="60" aria-hidden="true"></canvas>Doaa Alyazgi</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#work">Work</a><a href="#xtreme">Competitions</a><a href="#github">GitHub</a><a href="#about">About</a>
+    </nav>
+    <a class="hire magnet" href="#contact"><i></i>Let's talk</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <span class="pill"><b>OPEN</b>Palestine · software engineer</span>
+        <h1 class="name" aria-label="Doaa Alyazgi">
+          <span class="ln" aria-hidden="true" data-split>Doaa</span>
+          <span class="ln grad" aria-hidden="true" data-split>Alyazgi</span>
+        </h1>
+        <p class="thesis">I build software that keeps working when the <span class="rot" id="rot">network</span> <em>doesn't.</em></p>
+        <p class="lede">Computer engineering undergraduate. I make <strong>offline-first apps</strong> in Flutter and Java,
+          small engines that make <strong>AI cheaper to run</strong>, and I spend my nights on <strong>competitive programming</strong>.</p>
+        <div class="cta">
+          <a class="btn primary magnet" href="#work">Explore my work
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
+          <a class="btn magnet" href="https://github.com/DoaaAlyazgi" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+            GitHub</a>
+          <a class="btn magnet" href="https://www.linkedin.com/in/doaa-alyazgi-1b8b88392" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+            LinkedIn</a>
+        </div>
+      </div>
+      <div class="loom-wrap" role="img" aria-label="A spinning tatreez cross-stitch star with my main skills orbiting it">
+        <div class="ring"></div>
+        <canvas id="loom" width="640" height="640"></canvas>
+        <div class="orbit" aria-hidden="true">
+          <span style="--a:-90deg"><b>Flutter</b></span>
+          <span style="--a:-18deg"><b>Java</b></span>
+          <span style="--a:54deg"><b>C++</b></span>
+          <span style="--a:126deg"><b>TypeScript</b></span>
+          <span style="--a:198deg"><b>Dart</b></span>
+        </div>
+        <div class="loom-cap" lang="ar" dir="rtl">كل غرزة سطر كود</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="track">
+      <span>Offline-first</span><span>Flutter</span><span>Clean Architecture</span><span>Java</span><span>Algorithms</span><span>C++</span><span>React</span><span>TypeScript</span><span>Arabic RTL</span><span>Data Structures</span><span>SQL</span><span>Git</span>
+      <span>Offline-first</span><span>Flutter</span><span>Clean Architecture</span><span>Java</span><span>Algorithms</span><span>C++</span><span>React</span><span>TypeScript</span><span>Arabic RTL</span><span>Data Structures</span><span>SQL</span><span>Git</span>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat reveal"><b data-count="9">9</b><span>projects built or in progress</span></div>
+      <div class="stat reveal"><b data-count="6" id="factRepos">6</b><span>public GitHub repositories</span></div>
+      <div class="stat reveal"><b data-count="24" data-suffix="h">24h</b><span>IEEEXtreme 20.0 coding marathon</span></div>
+      <div class="stat reveal"><b>AR<span style="color:var(--rose)">·</span>EN</b><span>real right-to-left interfaces</span></div>
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <section class="block" id="work">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div><span class="label">Selected work</span><h2>Things I've <span class="grad">built</span></h2></div>
+        <p>Every project starts from a real constraint: an unstable connection, a token budget, a customer who doesn't want to scroll through 300 trophies. Each card below has a live demo of the idea.</p>
+      </div>
+
+      <div class="stack">
+        <!-- Mudabbir -->
+        <article class="scard" style="--n:0; --tint: rgba(159,210,122,.18)">
+          <div class="body">
+            <span class="num">01 / Featured</span>
+            <div class="kind"><span class="tag olive">Flutter · Mobile</span><span class="tag">Offline-first</span></div>
+            <h3>Mudabbir <span lang="ar">مُدبّر</span></h3>
+            <p>A daily survival assistant for Gaza. It finds services, doctors and essentials, and it works <strong>fully offline</strong>. When a connection appears it syncs quietly, and every live item shows <strong>when it was last updated</strong>, so the app never pretends old data is fresh.</p>
+            <ul class="chips"><li>Clean Architecture</li><li>Riverpod</li><li>Hive</li><li>Dio</li><li>go_router</li><li>Freezed</li><li>Material 3</li><li>AR RTL + EN</li></ul>
+            <div class="foot"><span class="note">Built July 2026 · private repository</span></div>
+          </div>
+          <div class="demo">
+            <div class="democol">
+              <div class="phone">
+                <div class="screen" aria-live="polite">
+                  <div class="sbar"><b lang="ar">مُدبّر</b><span class="mono" id="clock">09:41</span></div>
+                  <div class="banner" id="banner" lang="ar"><i></i><span id="bannerText">غير متصل · آخر بيانات محفوظة</span></div>
+                  <div class="svc"><b lang="ar">نقطة مياه · حي الرمال</b><small lang="ar" class="upd">آخر تحديث: قبل ٣ ساعات</small></div>
+                  <div class="svc"><b lang="ar">طب أطفال · عيادة متنقلة</b><small lang="ar" class="upd">آخر تحديث: أمس</small></div>
+                  <div class="svc"><b lang="ar">شحن بطاريات · طاقة شمسية</b><small lang="ar" class="upd">آخر تحديث: قبل ٥ ساعات</small></div>
+                  <div class="svc"><b lang="ar">صيدلية مناوبة</b><small lang="ar" class="upd">آخر تحديث: قبل يومين</small></div>
+                </div>
+              </div>
+              <label class="switch" for="netSwitch"><input type="checkbox" id="netSwitch"> <span id="netLabel">Offline · tap to reconnect</span></label>
+            </div>
+          </div>
+        </article>
+
+        <!-- Prompt Window Optimizer -->
+        <article class="scard" style="--n:1; --tint: rgba(139,123,255,.22)">
+          <div class="body">
+            <span class="num">02</span>
+            <div class="kind"><span class="tag">Java · AI tooling</span></div>
+            <h3>Prompt Window Optimizer</h3>
+            <p>Sending a whole chat history to an LLM is slow and expensive. This engine trims it first: <strong>pinned system prompts</strong> and the <strong>latest turns</strong> always stay, stale turns get evicted to fit the token budget.</p>
+            <ul class="chips"><li>Prefix Sum · O(1) ranges</li><li>Sliding Window · O(N)</li><li>Gemini API</li></ul>
+            <div class="foot">
+              <span class="note">Oct 2026</span>
+              <a class="link" href="https://github.com/DoaaAlyazgi/prompt-window-optimizer" target="_blank" rel="noopener">View code <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+            </div>
+          </div>
+          <div class="demo">
+            <div class="tokens" aria-live="polite">
+              <div class="meter"><b id="tokCount">512 <small>tokens</small></b><span class="label" id="tokState">Raw history</span></div>
+              <div class="bar"><span id="tokBar" style="width:100%"></span></div>
+              <div class="msgs" id="msgs"></div>
+              <div class="legend"><span><i style="background:var(--rose)"></i>Pinned system prompt</span><span><i style="background:var(--violet)"></i>Old turns</span><span><i style="background:var(--olive)"></i>Latest turns</span></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Global Medal -->
+        <article class="scard" style="--n:2; --tint: rgba(255,184,77,.2)">
+          <div class="body">
+            <span class="num">03</span>
+            <div class="kind"><span class="tag gold">React · TypeScript</span><span class="tag">Client concept</span></div>
+            <h3>Smart Awards Assistant</h3>
+            <p>A guided shopping prototype for Global Medal, Kuwait's first trophy store. <strong>Six short questions</strong> replace browsing hundreds of medals. A deterministic scoring engine picks three options, explains each match, then hands the request to WhatsApp.</p>
+            <ul class="chips"><li>React 19</li><li>Tailwind</li><li>Vite</li><li>Scoring engine</li><li>AR/EN RTL</li></ul>
+            <div class="foot">
+              <span class="note">Sep 2026</span>
+              <a class="link" href="https://github.com/DoaaAlyazgi/newproject" target="_blank" rel="noopener">View code <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+            </div>
+          </div>
+          <div class="demo">
+            <div class="recs" id="recs">
+              <div class="rec"><b>Crystal star award</b><span class="score" data-s="94">94</span><div class="bar"><span style="width:94%"></span></div><small>Best match · occasion + logo + premium style</small></div>
+              <div class="rec"><b>Gold medal with ribbon</b><span class="score" data-s="81">81</span><div class="bar"><span style="width:81%"></span></div><small>Best value · fits 10–20 KD for 50 pieces</small></div>
+              <div class="rec"><b>Engraved wooden plaque</b><span class="score" data-s="73">73</span><div class="bar"><span style="width:73%"></span></div><small>Another strong match · ready in 1–2 weeks</small></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Wallet -->
+        <article class="scard" style="--n:3; --tint: rgba(255,77,109,.2)">
+          <div class="body">
+            <span class="num">04</span>
+            <div class="kind"><span class="tag">Java · OOP</span><span class="tag olive">Offline-first</span></div>
+            <h3>Smart Offline Wallet</h3>
+            <p>A digital wallet that keeps working without internet: send, receive and pay behind a PIN, keep a full transaction history, then <strong>sync when the connection returns</strong> without ever processing a payment twice.</p>
+            <ul class="chips"><li>Encapsulation</li><li>Polymorphism</li><li>Serialization</li><li>Enums</li></ul>
+            <div class="foot">
+              <span class="note">Mar 2026 · my first OOP project</span>
+              <a class="link" href="https://github.com/DoaaAlyazgi/SmartOfflineWallet" target="_blank" rel="noopener">View code <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+            </div>
+          </div>
+          <div class="demo">
+            <div class="wallet">
+              <div class="wcard"><small>BALANCE · DOAA</small><b id="bal">800</b><small id="walletNet">Offline · 0 waiting to sync</small></div>
+              <div id="txs" style="display:grid; gap: var(--s-2)"></div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="mini">
+        <article class="tilt reveal">
+          <div class="kind"><span class="tag gold">Open source · Teaching</span></div>
+          <h3>Git &amp; GitHub Handbook</h3>
+          <div class="chapters" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i><i style="--i:8"></i><i style="--i:9"></i></div>
+          <p>A bilingual guide in ten chapters, from the first <span class="mono">git init</span> to rebase, cherry-pick and the errors that scare beginners off.</p>
+          <div class="foot"><span class="note">★ 2 stars</span>
+            <a class="link" href="https://github.com/DoaaAlyazgi/Git-and-GitHub-Handbook" target="_blank" rel="noopener">Read <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+        </article>
+        <article class="tilt reveal">
+          <div class="kind"><span class="tag">UI design · Arabic</span></div>
+          <h3>Bun <span lang="ar">تطبيق بُن</span></h3>
+          <div class="cup" lang="ar" dir="rtl">سيجنتشر بُن ☕</div>
+          <p>An app concept for a specialty coffee shop: menu, signature drinks and customer moments, designed right-to-left from the root with calligraphic Arabic type.</p>
+          <div class="foot"><span class="note">Design mockup</span></div>
+        </article>
+        <article class="tilt reveal">
+          <div class="kind"><span class="tag olive">In progress</span></div>
+          <h3>Sanad <span lang="ar">سند</span></h3>
+          <div class="typing" id="typing">building the first version</div>
+          <p>My next app, built in the open. The repository is already live; details land here when version one ships.</p>
+          <div class="foot"><span class="note">2026</span>
+            <a class="link" href="https://github.com/DoaaAlyazgi/sanad-app" target="_blank" rel="noopener">Follow <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPETITIONS -->
+  <section class="block" id="xtreme">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div><span class="label">Competitive programming</span><h2>24 hours, <span class="grad">one keyboard</span></h2></div>
+        <p>Contests taught me to think under pressure and to prove an idea before I write it. My favourite problem from IEEEXtreme 20.0 was an interactive game of deduction.</p>
+      </div>
+      <div class="comp">
+        <div class="comp-text reveal">
+          <span class="tag">IEEEXtreme 20.0 · C++</span>
+          <h3>Clue Duel</h3>
+          <p style="color:var(--muted); margin:0">Two players race to name the hidden person, weapon and location. My solution treats it as a search over a tiny world, and lets the opponent's own guesses leak information.</p>
+          <ol class="steps">
+            <li><span><b>Shrink the world.</b> One hidden card per category, so the state is just (person, weapon, location).</span></li>
+            <li><span><b>Ask three at once.</b> Each "shown" reply removes exactly one candidate, whatever the opponent picks.</span></li>
+            <li><span><b>Learn the bot.</b> Its guesses hint at the answer; how much to trust them is learned during the game.</span></li>
+            <li><span><b>Decide with DP.</b> A small dynamic program over the race says when to stop asking and accuse.</span></li>
+          </ol>
+        </div>
+        <div class="code reveal">
+          <header><div class="dots"><i></i><i></i><i></i></div><span class="label">clue_duel.cpp</span></header>
+<pre id="codePre"><span class="c">// Clue Duel - IEEEXtreme 20.0</span>
+<span class="c">// how much does the opponent's guess reveal?</span>
+<span class="k">static const</span> <span class="t">int</span>    G = <span class="n">4</span>;
+<span class="k">static const</span> <span class="t">double</span> GAM[G]       = {<span class="n">0.0</span>, <span class="n">0.5</span>, <span class="n">0.9</span>, <span class="n">0.99</span>};
+<span class="k">static const</span> <span class="t">double</span> GAM_PRIOR[G] = {<span class="n">0.4</span>, <span class="n">0.2</span>, <span class="n">0.2</span>, <span class="n">0.2</span>};
+<span class="k">static const</span> <span class="t">double</span> SOFT_CAP     = <span class="n">0.95</span>;
+<span class="c">// never fully trust inferred beliefs</span>
+
+<span class="k">struct</span> <span class="t">Card</span> { <span class="t">int</span> cat, id; };
+
+<span class="c">// a wrong accusation is still worth 3,</span>
+<span class="c">// losing the race is worth 0</span>
+<span class="c">// → a small DP picks the moment to accuse</span></pre>
+        </div>
+      </div>
+      <div class="guides">
+        <article class="tilt reveal" lang="ar" dir="rtl">
+          <h4>دليل IEEEXtreme للتحضير</h4>
+          <p>خارطة طريق كاملة كتبتها لزملائي: الخوارزميات الأساسية، قوالب جاهزة بلغات C++ و Java و Python، وخطة تدريب قبل المسابقة.</p>
+        </article>
+        <article class="tilt reveal">
+          <h4 class="en">Core techniques sheet</h4>
+          <p>A printable cheat sheet of the patterns that keep coming back: prefix sums, two pointers, BFS/DFS, DP, binary search on the answer.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- GITHUB -->
+  <section class="block" id="github">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div><span class="label">Connected to GitHub</span><h2>Live from <span class="grad">@DoaaAlyazgi</span></h2></div>
+        <p>This section talks to the GitHub API the same way Mudabbir talks to its server: it syncs when it can, and tells you how fresh the data is when it can't.</p>
+      </div>
+      <div class="gh reveal">
+        <div class="gh-top">
+          <div class="who">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+            <div><b>Doaa Alyazgi</b><small>@DoaaAlyazgi · Palestine</small></div>
+          </div>
+          <span class="sync loading" id="sync" aria-live="polite"><i></i><span id="syncText">Syncing with GitHub…</span></span>
+        </div>
+        <div class="langbar" id="langbar" aria-hidden="true"></div>
+        <ul class="langs" id="langs"></ul>
+        <div class="repos" id="repos"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="block" id="about">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div><span class="label">About</span><h2>Learning <span class="grad">in public</span></h2></div>
+        <p>Engineer by training, teacher by habit. I learn something, build with it, then write it down so the next person gets there faster.</p>
+      </div>
+      <div class="about">
+        <div class="about-text reveal">
+          <p class="big">I'm a computer engineering student from Palestine. Growing up where the internet comes and goes made me care about software that <em>degrades gracefully</em> instead of failing.</p>
+          <p>I've competed in several programming contests, which sharpened my problem-solving and my ability to work under pressure. I volunteer in programming communities for beginners, giving guidance and practical advice, and I write the guides I wish I'd had.</p>
+          <p>Right now I'm going deeper into databases with a SQL Server course, practising Python for AI, and improving my English every day. I'm looking for a team where I can contribute, learn from people better than me, and help build something useful.</p>
+          <ol class="timeline">
+            <li><time>Feb 2026</time>Joined GitHub · first Java OOP project, Smart Offline Wallet</li>
+            <li><time>Jul 2026</time>Built Mudabbir in Flutter with Clean Architecture</li>
+            <li><time>Aug 2026</time>Published the bilingual Git &amp; GitHub Handbook</li>
+            <li><time>Sep 2026</time>Shipped a React + TypeScript prototype for Global Medal</li>
+            <li><time>Oct 2026</time>Prompt Window Optimizer · competed in IEEEXtreme 20.0</li>
+          </ol>
+        </div>
+        <div class="kit">
+          <div class="reveal"><h4 class="label">Languages</h4><ul class="chips"><li class="hi">Java</li><li class="hi">Dart</li><li class="hi">C++</li><li>TypeScript</li><li>Python</li><li>SQL</li><li>HTML/CSS</li></ul></div>
+          <div class="reveal"><h4 class="label">Frameworks</h4><ul class="chips"><li class="hi">Flutter</li><li>Riverpod</li><li>Hive</li><li>Dio</li><li>Freezed</li><li>React</li><li>Tailwind</li><li>Vite</li></ul></div>
+          <div class="reveal"><h4 class="label">Foundations</h4><ul class="chips"><li class="hi">Data structures</li><li class="hi">Algorithms</li><li>OOP</li><li>Clean Architecture</li><li>Databases</li><li>Offline sync</li><li>RTL / i18n</li></ul></div>
+          <div class="reveal"><h4 class="label">Tools &amp; languages spoken</h4><ul class="chips"><li>Git</li><li>GitHub</li><li>VS Code</li><li>Android Studio</li><li>SQL Server</li><li>Arabic · native</li><li>English</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div class="cbox reveal">
+        <span class="label" style="color:var(--gold)">Contact</span>
+        <h2 style="margin-top: var(--s-4)">Have something worth <span class="grad">building?</span></h2>
+        <div class="mail">
+          <code id="email">doaasalahyazgi@gmail.com</code>
+          <button class="btn primary magnet" type="button" id="copyBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+            Copy email</button>
+        </div>
+        <div class="socials">
+          <a class="social" href="https://github.com/DoaaAlyazgi" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+            <div><b>GitHub</b><small>github.com/DoaaAlyazgi</small></div>
+          </a>
+          <a class="social" href="https://www.linkedin.com/in/doaa-alyazgi-1b8b88392" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+            <div><b>LinkedIn</b><small>in/doaa-alyazgi</small></div>
+          </a>
+          <a class="social" href="mailto:doaasalahyazgi@gmail.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 7 9-7"/></svg>
+            <div><b>Email</b><small>doaasalahyazgi@gmail.com</small></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Doaa Alyazgi · Palestine</span>
+    <span lang="ar" dir="rtl">صُنع بحب، ويعمل حتى بدون إنترنت</span>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fine = matchMedia("(pointer: fine)").matches;
+  const C = { rose: "#ff4d6d", gold: "#ffb84d", olive: "#9fd27a", violet: "#8b7bff", fg: "#f1ece4" };
+
+  /* ---------- split name into letters ---------- */
+  $$("[data-split]").forEach((el) => {
+    const t = el.textContent; el.textContent = "";
+    [...t].forEach((ch, i) => { const s = document.createElement("span"); s.className = "ch"; s.style.setProperty("--i", i + (el.classList.contains("grad") ? 4 : 0)); s.textContent = ch; el.appendChild(s); });
+  });
+
+  /* ---------- rotating word ---------- */
+  const words = ["network", "electricity", "signal", "server", "network"];
+  let wi = 0; const rot = $("#rot");
+  if (!reduce) setInterval(() => {
+    rot.classList.add("cut");
+    setTimeout(() => { wi = (wi + 1) % (words.length - 1); rot.textContent = words[wi]; rot.classList.remove("cut"); rot.classList.remove("swap"); void rot.offsetWidth; rot.classList.add("swap"); }, 900);
+  }, 2800);
+
+  /* ---------- scroll progress + active nav ---------- */
+  const prog = $("#progress");
+  const navLinks = $$(".nav a");
+  const onScroll = () => {
+    const h = document.documentElement.scrollHeight - innerHeight;
+    prog.style.transform = `scaleX(${h > 0 ? scrollY / h : 0})`;
+    let cur = "";
+    navLinks.forEach((a) => { const s = $(a.getAttribute("href")); if (s && s.getBoundingClientRect().top < innerHeight * .4) cur = a; });
+    navLinks.forEach((a) => a.classList.toggle("on", a === cur));
+  };
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  /* ---------- cursor glow, magnet buttons, tilt cards ---------- */
+  if (fine && !reduce) {
+    const glow = $("#glow");
+    addEventListener("pointermove", (e) => { glow.style.opacity = 1; glow.style.left = e.clientX + "px"; glow.style.top = e.clientY + "px"; }, { passive: true });
+    $$(".magnet").forEach((b) => {
+      b.addEventListener("pointermove", (e) => { const r = b.getBoundingClientRect(); b.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .25}px, ${(e.clientY - r.top - r.height / 2) * .35}px)`; });
+      b.addEventListener("pointerleave", () => { b.style.transform = ""; });
+    });
+    $$(".tilt").forEach((c) => {
+      c.addEventListener("pointermove", (e) => {
+        const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        c.style.setProperty("--ry", ((x - .5) * 10).toFixed(2) + "deg"); c.style.setProperty("--rx", ((.5 - y) * 10).toFixed(2) + "deg");
+        c.style.setProperty("--mx", x * 100 + "%"); c.style.setProperty("--my", y * 100 + "%");
+      });
+      c.addEventListener("pointerleave", () => { c.style.setProperty("--rx", "0deg"); c.style.setProperty("--ry", "0deg"); });
+    });
+    $$(".scard").forEach((c) => c.addEventListener("pointermove", (e) => {
+      const r = c.getBoundingClientRect(); c.style.setProperty("--mx", (e.clientX - r.left) + "px"); c.style.setProperty("--my", (e.clientY - r.top) + "px");
+    }));
+  }
+
+  /* ---------- background threads ---------- */
+  (() => {
+    const cv = $("#threads"), ctx = cv.getContext("2d");
+    let W, H, dpr, mx = .5, my = .5;
+    const threads = [
+      { c: C.rose, a: .22, amp: .09, f: 1.3, sp: .00018, y: .22, w: 1.4 },
+      { c: C.gold, a: .16, amp: .07, f: 1.9, sp: -.00022, y: .38, w: 1 },
+      { c: C.violet, a: .2, amp: .12, f: .9, sp: .00013, y: .62, w: 1.6 },
+      { c: C.olive, a: .12, amp: .06, f: 2.4, sp: -.00016, y: .78, w: 1 },
+      { c: C.rose, a: .1, amp: .14, f: .7, sp: .0001, y: .5, w: 2.2 }
+    ];
+    const resize = () => { dpr = Math.min(devicePixelRatio || 1, 2); W = cv.width = innerWidth * dpr; H = cv.height = innerHeight * dpr; };
+    resize(); addEventListener("resize", resize);
+    if (fine) addEventListener("pointermove", (e) => { mx = e.clientX / innerWidth; my = e.clientY / innerHeight; }, { passive: true });
+    const draw = (t) => {
+      ctx.clearRect(0, 0, W, H);
+      threads.forEach((th, k) => {
+        ctx.beginPath(); ctx.strokeStyle = th.c; ctx.globalAlpha = th.a; ctx.lineWidth = th.w * dpr;
+        for (let i = 0; i <= 80; i++) {
+          const x = i / 80, pull = Math.exp(-Math.pow((x - mx) * 4, 2)) * (my - th.y) * .25;
+          const y = th.y + Math.sin(x * Math.PI * 2 * th.f + t * th.sp * 6 + k) * th.amp + Math.sin(x * 9 + t * th.sp * 10) * .012 + pull;
+          i ? ctx.lineTo(x * W, y * H) : ctx.moveTo(x * W, y * H);
+        }
+        ctx.stroke();
+        // stitch crosses riding the thread
+        ctx.lineWidth = 1.4 * dpr;
+        for (let j = 0; j < 3; j++) {
+          const x = ((t * Math.abs(th.sp) * .4 + j / 3 + k * .17) % 1);
+          const y = th.y + Math.sin(x * Math.PI * 2 * th.f + t * th.sp * 6 + k) * th.amp + Math.sin(x * 9 + t * th.sp * 10) * .012 + Math.exp(-Math.pow((x - mx) * 4, 2)) * (my - th.y) * .25;
+          const s = 5 * dpr, px = x * W, py = y * H;
+          ctx.globalAlpha = th.a * 2.4; ctx.beginPath(); ctx.moveTo(px - s, py - s); ctx.lineTo(px + s, py + s); ctx.moveTo(px + s, py - s); ctx.lineTo(px - s, py + s); ctx.stroke();
+        }
+      });
+      ctx.globalAlpha = 1;
+      if (!reduce && !document.hidden) requestAnimationFrame(draw);
+    };
+    requestAnimationFrame(draw);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden && !reduce) requestAnimationFrame(draw); });
+  })();
+
+  /* ---------- tatreez motif ---------- */
+  function stitch(ctx, x, y, s, color, w) {
+    const p = s * .16; ctx.strokeStyle = color; ctx.lineWidth = w; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(x + p, y + p); ctx.lineTo(x + s - p, y + s - p); ctx.moveTo(x + s - p, y + p); ctx.lineTo(x + p, y + s - p); ctx.stroke();
+  }
+  function motif(x, y, c) {
+    const dx = Math.abs(x - c), dy = Math.abs(y - c), d = dx + dy, m = Math.max(dx, dy);
+    if (d === 12) return 2;
+    if (d === 10 && dx % 2 === 0) return 4;
+    if (m <= 1) return 1;
+    if ((dx === 0 || dy === 0) && m <= 6) return 1;
+    if (dx === dy && dx <= 5) return 3;
+    if (d === 6 && m === 5) return 4;
+    if (dx === dy && dx === 7) return 2;
+    if ((dx === 0 || dy === 0) && m === 9) return 3;
+    if (m === 14 && (dx + dy) % 3 === 0) return 4;
+    return 0;
+  }
+  const PAL = [null, C.rose, C.fg, C.gold, C.olive];
+  (() => { // header mark
+    const cv = $("#mark"), ctx = cv.getContext("2d"), n = 7, s = cv.width / n;
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+      const d = Math.abs(x - 3) + Math.abs(y - 3);
+      if (d === 3) stitch(ctx, x * s, y * s, s, C.gold, 2.6); else if (d <= 1) stitch(ctx, x * s, y * s, s, C.rose, 2.6);
+    }
+  })();
+  (() => { // hero loom
+    const cv = $("#loom"), ctx = cv.getContext("2d"), N = 29, s = cv.width / N, c = 14, cells = [];
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) { const v = motif(x, y, c); if (v) cells.push({ x, y, v, d: Math.hypot(x - c, y - c) }); }
+    cells.sort((a, b) => a.d - b.d);
+    let shown = reduce ? cells.length : 0, t0 = 0;
+    const draw = (t) => {
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      const breathe = reduce ? 1 : 1 + Math.sin(t / 900) * .04;
+      for (let i = 0; i < shown; i++) {
+        const k = cells[i]; const wob = reduce ? 0 : Math.sin(t / 600 + k.d) * .6;
+        ctx.shadowColor = PAL[k.v]; ctx.shadowBlur = 8;
+        stitch(ctx, k.x * s + wob, k.y * s - wob, s, PAL[k.v], s * .17 * breathe);
+      }
+      ctx.shadowBlur = 0;
+      if (shown < cells.length) shown = Math.min(cells.length, shown + 3);
+      if (!reduce) requestAnimationFrame(draw);
+    };
+    requestAnimationFrame(draw);
+    cv.parentElement.addEventListener("click", () => { if (!reduce) shown = 0; });
+  })();
+
+  /* ---------- count up ---------- */
+  const io = (fn, opts) => { const o = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { fn(e.target); o.unobserve(e.target); } }), opts || { threshold: .4 }); return o; };
+  const counter = io((el) => {
+    if (reduce) return;
+    const end = +el.dataset.count, suf = el.dataset.suffix || "", t0 = performance.now();
+    const tick = (t) => { const p = Math.min(1, (t - t0) / 1400), e = 1 - Math.pow(1 - p, 3); el.textContent = Math.round(end * e) + suf; if (p < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  });
+  $$("[data-count]").forEach((el) => counter.observe(el));
+
+  /* ---------- Mudabbir demo ---------- */
+  const sw = $("#netSwitch"), banner = $("#banner");
+  const offTxt = ["آخر تحديث: قبل ٣ ساعات", "آخر تحديث: أمس", "آخر تحديث: قبل ٥ ساعات", "آخر تحديث: قبل يومين"];
+  const setNet = (on) => {
+    sw.checked = on;
+    $("#netLabel").textContent = on ? "Online · synced" : "Offline · tap to reconnect";
+    banner.classList.toggle("on", on);
+    $("#bannerText").textContent = on ? "متصل · تمت المزامنة الآن" : "غير متصل · آخر بيانات محفوظة";
+    $$(".upd").forEach((el, i) => {
+      setTimeout(() => { el.textContent = on ? "آخر تحديث: الآن" : offTxt[i]; const card = el.parentElement; card.classList.remove("blink-ok"); if (on) { void card.offsetWidth; card.classList.add("blink-ok"); } }, on ? i * 220 : 0);
+    });
+  };
+  let userTouched = false;
+  sw.addEventListener("change", () => { userTouched = true; setNet(sw.checked); });
+  if (!reduce) setInterval(() => { if (!userTouched) setNet(!sw.checked); }, 3600);
+  $("#clock").textContent = new Date().toTimeString().slice(0, 5);
+
+  /* ---------- token window demo ---------- */
+  const widths = [70, 40, 90, 55, 30, 80, 45, 60, 95, 35, 65, 50, 75, 85];
+  const msgs = $("#msgs");
+  widths.forEach((w, i) => {
+    const d = document.createElement("div");
+    d.className = "msg" + (i === 0 ? " pin" : i >= widths.length - 3 ? " new" : "");
+    d.style.setProperty("--w", w + "px"); d.textContent = i === 0 ? "SYSTEM" : i >= widths.length - 3 ? "T" + (i) : "T" + i;
+    msgs.appendChild(d);
+  });
+  const tokCount = $("#tokCount"), tokBar = $("#tokBar"), tokState = $("#tokState");
+  let optimized = false;
+  const animateNum = (from, to) => {
+    const t0 = performance.now();
+    const tick = (t) => { const p = Math.min(1, (t - t0) / 1000), e = 1 - Math.pow(1 - p, 3); tokCount.firstChild.nodeValue = Math.round(from + (to - from) * e) + " "; if (p < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  };
+  const tokenStep = () => {
+    optimized = !optimized;
+    const mids = $$(".msg", msgs).filter((m) => !m.classList.contains("pin") && !m.classList.contains("new"));
+    mids.forEach((m, i) => setTimeout(() => m.classList.toggle("out", optimized), (optimized ? i : mids.length - i) * 70));
+    tokBar.style.width = optimized ? "19%" : "100%";
+    tokState.textContent = optimized ? "Optimized window" : "Raw history";
+    animateNum(optimized ? 512 : 97, optimized ? 97 : 512);
+  };
+  if (reduce) tokenStep(); else setInterval(tokenStep, 3200);
+
+  /* ---------- recommendations demo ---------- */
+  const recs = $$(".rec");
+  if (reduce) $("#recs").classList.add("static");
+  else {
+    const runRecs = () => {
+      recs.forEach((r) => { r.classList.remove("in"); $(".bar span", r).style.width = "0%"; $(".score", r).textContent = "0"; });
+      recs.forEach((r, i) => setTimeout(() => {
+        r.classList.add("in");
+        const sc = +$(".score", r).dataset.s; $(".bar span", r).style.width = sc + "%";
+        const t0 = performance.now(); const tick = (t) => { const p = Math.min(1, (t - t0) / 1100); $(".score", r).textContent = Math.round(sc * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(tick); }; requestAnimationFrame(tick);
+      }, 400 + i * 450));
+    };
+    io(() => { runRecs(); setInterval(runRecs, 6500); }, { threshold: .3 }).observe($("#recs"));
+  }
+
+  /* ---------- wallet demo ---------- */
+  const txs = $("#txs"), bal = $("#bal"), net = $("#walletNet");
+  const script = [
+    { d: "Sent to Ahmed", a: -300 }, { d: "Received from Sara", a: +150 }, { d: "Paid internet bill", a: -45 }
+  ];
+  let balance = 800, queue = [];
+  const addTx = (tx) => {
+    const el = document.createElement("div"); el.className = "tx";
+    el.innerHTML = `<span>${tx.d}</span><span class="amt">${tx.a > 0 ? "+" : ""}${tx.a}</span><span class="st">QUEUED</span>`;
+    txs.prepend(el); queue.push(el);
+    balance += tx.a; bal.textContent = balance;
+    net.textContent = `Offline · ${queue.length} waiting to sync`;
+    while (txs.children.length > 3) txs.lastChild.remove();
+  };
+  const syncAll = () => {
+    net.textContent = "Online · syncing…";
+    queue.forEach((el, i) => setTimeout(() => { const st = $(".st", el); if (st) { st.textContent = "SYNCED"; st.classList.add("ok"); } }, 300 + i * 300));
+    setTimeout(() => { net.textContent = "Online · all synced, no duplicates"; }, 400 + queue.length * 300);
+    queue = [];
+  };
+  const runWallet = () => {
+    txs.innerHTML = ""; balance = 800; bal.textContent = balance; queue = []; net.textContent = "Offline · 0 waiting to sync";
+    script.forEach((tx, i) => setTimeout(() => addTx(tx), 600 + i * 900));
+    setTimeout(syncAll, 600 + script.length * 900 + 700);
+  };
+  if (reduce) { script.forEach(addTx); syncAll(); }
+  else io(() => { runWallet(); setInterval(runWallet, 8000); }, { threshold: .3 }).observe(txs.parentElement);
+
+  /* ---------- Sanad typing ---------- */
+  if (!reduce) {
+    const lines = ["building the first version", "writing the data layer", "designing the screens", "coming soon"];
+    let li = 0, ci = lines[0].length, del = true; const ty = $("#typing");
+    setInterval(() => {
+      const L = lines[li];
+      if (del) { ci--; if (ci <= 0) { del = false; li = (li + 1) % lines.length; } }
+      else { ci++; if (ci >= lines[li].length + 14) del = true; }
+      ty.textContent = lines[li].slice(0, Math.max(0, Math.min(ci, lines[li].length)));
+    }, 70);
+  }
+
+  /* ---------- code typing on view ---------- */
+  if (!reduce) {
+    const pre = $("#codePre"), html = pre.innerHTML;
+    io(() => {
+      // walk the html, revealing characters but keeping tags intact
+      let i = 0, out = "";
+      const step = () => {
+        for (let k = 0; k < 3 && i < html.length; k++) {
+          if (html[i] === "<") { const j = html.indexOf(">", i); out += html.slice(i, j + 1); i = j + 1; k--; continue; }
+          if (html[i] === "&") { const j = html.indexOf(";", i); out += html.slice(i, j + 1); i = j + 1; continue; }
+          out += html[i++];
+        }
+        pre.innerHTML = out + (i < html.length ? '<span class="n">▍</span>' : "");
+        if (i < html.length) setTimeout(step, 14);
+      };
+      step();
+    }, { threshold: .35 }).observe(pre);
+  }
+
+  /* ---------- GitHub sync ---------- */
+  const USER = "DoaaAlyazgi";
+  const SNAPSHOT_AT = "2026-11-06T13:15:00Z";
+  const SNAPSHOT = {
+    repos: [
+      { name: "prompt-window-optimizer", description: "A lightweight Java engine optimizing LLM context window using Prefix Sum and Sliding Window to minimize token costs and latency.", language: "Java", stargazers_count: 0, pushed_at: "2026-10-10T10:02:45Z" },
+      { name: "newproject", description: "Global Medal: a smart awards and gifts assistant. React 19, TypeScript, Tailwind, bilingual RTL.", language: "TypeScript", stargazers_count: 0, pushed_at: "2026-09-08T07:59:38Z" },
+      { name: "Git-and-GitHub-Handbook", description: "A bilingual practical guide to learning Git and GitHub through clear explanations, real examples and hands-on workflows.", language: null, stargazers_count: 2, pushed_at: "2026-08-11T18:21:18Z" },
+      { name: "sanad-app", description: "Sanad: in progress.", language: null, stargazers_count: 0, pushed_at: "2026-08-14T21:35:06Z" },
+      { name: "SmartOfflineWallet", description: "Offline-first Java wallet app with secure PIN, full transaction history, and automatic sync when online.", language: "Java", stargazers_count: 0, pushed_at: "2026-03-01T21:38:27Z" },
+      { name: "DoaaAlyazgi-", description: "Profile README: software engineer, computer engineering undergraduate.", language: null, stargazers_count: 1, pushed_at: "2026-02-24T13:30:56Z" }
+    ],
+    langs: { TypeScript: 221335, Java: 21972, JavaScript: 4440, CSS: 3702, HTML: 1320 }
+  };
+  const LANG_COLORS = { TypeScript: "#3178c6", Java: "#e76f00", JavaScript: "#f1e05a", CSS: "#8b7bff", HTML: "#e34c26", Dart: "#00b4ab", "C++": "#f34b7d", Python: "#3572a5" };
+  const fmtDate = (iso) => new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const repoIcon = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.71 1.71.75.75 0 0 1-1.07 1.05A2.5 2.5 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.71A2.5 2.5 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.09a.25.25 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></svg>';
+
+  function render(data) {
+    const repos = [...data.repos].sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+    const fr = $("#factRepos"); fr.dataset.count = repos.length; fr.textContent = repos.length;
+    $("#repos").innerHTML = repos.map((r, i) => {
+      const col = LANG_COLORS[r.language] || "#9da0ad";
+      return `<a class="repo" style="--i:${i}" href="https://github.com/${USER}/${esc(r.name)}" target="_blank" rel="noopener">
+        <span class="rname">${repoIcon}${esc(r.name)}</span>
+        <span class="rdesc">${esc(r.description || "No description yet.")}</span>
+        <span class="rmeta">${r.language ? `<span class="dot"><i style="background:${col}"></i>${esc(r.language)}</span>` : ""}<span>★ ${r.stargazers_count}</span><span>Updated ${fmtDate(r.pushed_at)}</span></span>
+      </a>`;
+    }).join("");
+    const entries = Object.entries(data.langs).sort((a, b) => b[1] - a[1]);
+    const total = entries.reduce((s, [, v]) => s + v, 0) || 1;
+    $("#langbar").innerHTML = entries.map(([k, v]) => `<span style="width:${(v / total * 100).toFixed(2)}%;background:${LANG_COLORS[k] || "#9da0ad"}"></span>`).join("");
+    $("#langs").innerHTML = entries.map(([k, v]) => `<li><i style="background:${LANG_COLORS[k] || "#9da0ad"}"></i>${esc(k)} <b>${(v / total * 100).toFixed(1)}%</b></li>`).join("");
+  }
+  const setSync = (state, text) => { $("#sync").className = "sync " + state; $("#syncText").textContent = text; };
+
+  render(SNAPSHOT);
+  (async () => {
+    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 5000);
+    try {
+      const get = (u) => fetch("https://api.github.com/" + u, { signal: ctl.signal, headers: { Accept: "application/vnd.github+json" } })
+        .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); });
+      const repos = (await get(`users/${USER}/repos?per_page=100&sort=pushed`)).filter((r) => !r.fork);
+      const langList = await Promise.all(repos.map((r) => get(`repos/${USER}/${r.name}/languages`).catch(() => ({}))));
+      const langs = {};
+      langList.forEach((l) => Object.entries(l).forEach(([k, v]) => langs[k] = (langs[k] || 0) + v));
+      const snapDesc = Object.fromEntries(SNAPSHOT.repos.map((r) => [r.name, r.description]));
+      repos.forEach((r) => { if (!r.description) r.description = snapDesc[r.name]; });
+      render({ repos, langs: Object.keys(langs).length ? langs : SNAPSHOT.langs });
+      setSync("live", "Live · synced just now");
+    } catch (e) {
+      setSync("", "Offline copy · last synced " + fmtDate(SNAPSHOT_AT));
+    } finally { clearTimeout(t); }
+  })();
+
+  /* ---------- copy email ---------- */
+  const toast = (msg) => { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 1800); };
+  $("#copyBtn").addEventListener("click", () => {
+    const text = $("#email").textContent;
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents($("#email")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast("Selected. Press Ctrl+C to copy"); };
+    try { navigator.clipboard.writeText(text).then(() => toast("Email copied ✓"), fallback); } catch (e) { fallback(); }
+  });
+})();
+</script>
+
+</body>
+</html>
