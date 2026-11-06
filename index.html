@@ -272,7 +272,7 @@ main, header, footer { position: relative; z-index: 2; }
 /* ---------- reveal on scroll (content stays visible without support) ---------- */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .reveal { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
+    .reveal { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 160px; }
     @keyframes reveal { from { opacity: 0; transform: translateY(50px) scale(.97); filter: blur(6px); } }
   }
 }
@@ -465,6 +465,58 @@ section.block { padding-block: var(--s-8) 0; scroll-margin-top: 72px; }
 .pcpc-stats b { display: block; font: 800 1.6rem/1.1 var(--f-display); color: var(--gold); }
 .pcpc-stats span { font-size: .78rem; color: var(--muted); }
 @media (max-width: 480px) { .pcpc-stats { grid-template-columns: 1fr 1fr; } }
+/* IEEEXtreme showcase */
+.xt {
+  position: relative; overflow: hidden; display: grid; grid-template-columns: 1.1fr .9fr; gap: var(--s-6); align-items: center; margin-bottom: var(--s-7);
+  padding: clamp(1.5rem, 4vw, 3rem); border-radius: 28px; border: 1px solid rgba(139, 123, 255, .35);
+  background: radial-gradient(600px circle at 90% 30%, rgba(139, 123, 255, .2), transparent 60%), radial-gradient(500px circle at 0% 100%, rgba(255, 77, 109, .14), transparent 60%), linear-gradient(160deg, #15172a, #0e1019);
+}
+.xt::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .35;
+  background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 32px 32px;
+  -webkit-mask-image: radial-gradient(ellipse at 80% 40%, #000, transparent 70%); mask-image: radial-gradient(ellipse at 80% 40%, #000, transparent 70%); }
+@media (max-width: 860px) { .xt { grid-template-columns: 1fr; } }
+.xt-body { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--s-3); min-width: 0; }
+.xt-body h3 { font: 800 clamp(2.4rem, 5vw, 3.6rem)/1 var(--f-display); letter-spacing: -.04em; }
+.xt-sub { margin: -.3rem 0 0; font: 500 .95rem/1.4 var(--f-mono); color: var(--violet); }
+.xt-body > p:not(.xt-sub) { margin: 0; color: var(--muted); max-width: 54ch; }
+.xt-body strong { color: var(--fg); font-weight: 600; }
+.xt-stats { display: flex; gap: var(--s-4); align-items: center; margin-top: var(--s-3); flex-wrap: wrap; }
+.clock { position: relative; width: 112px; aspect-ratio: 1; flex: none; display: grid; place-items: center; text-align: center; }
+.clock svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.clock .ct { fill: none; stroke: var(--line); stroke-width: 7; }
+.lb-note { margin: .4rem .6rem 0; font: 500 .66rem/1.3 var(--f-mono); color: var(--muted); opacity: .7; }
+.clock .cf { fill: none; stroke: var(--violet); stroke-width: 7; stroke-linecap: round; stroke-dasharray: 327; stroke-dashoffset: 0; filter: drop-shadow(0 0 6px rgba(139,123,255,.8)); }
+.clock b { font: 800 1.25rem/1 var(--f-mono); font-variant-numeric: tabular-nums; margin-top: .7rem; }
+.clock small { font: 500 .66rem/1 var(--f-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-top: -1.4rem; }
+.xt-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2); flex: 1; min-width: 220px; }
+.xt-facts > div { padding: var(--s-3); border-radius: 14px; background: rgba(255, 255, 255, .04); border: 1px solid var(--line); min-width: 0; }
+.xt-facts b { display: block; font: 800 1.4rem/1.1 var(--f-display); color: var(--violet); }
+.xt-facts span { font-size: .75rem; color: var(--muted); }
+/* scoreboard */
+.lb { position: relative; z-index: 1; border-radius: 20px; background: rgba(6, 7, 12, .7); border: 1px solid var(--line-2); padding: var(--s-3); min-width: 0; box-shadow: 0 30px 60px -30px rgba(0,0,0,.9); }
+.lb-head { display: grid; grid-template-columns: 48px 1fr auto; gap: var(--s-3); padding: .3rem .6rem .6rem; font: 600 .62rem/1 var(--f-mono); letter-spacing: .12em; color: var(--muted); border-bottom: 1px solid var(--line); }
+.lb-head span:last-child { color: var(--olive); display: inline-flex; align-items: center; gap: .4rem; }
+.lb-head span:last-child::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1s infinite; }
+.lb-rows { position: relative; height: calc(10 * 38px); margin-top: .4rem; }
+.lb-row {
+  position: absolute; left: 0; right: 0; height: 34px; display: grid; grid-template-columns: 48px 1fr 90px; gap: var(--s-3); align-items: center; padding: 0 .6rem;
+  border-radius: 10px; transform: translateY(calc(var(--r) * 38px)); transition: transform .6s var(--ease), background .4s, box-shadow .4s;
+  font: 500 .82rem/1 var(--f-mono); color: var(--muted);
+}
+.lb-row .rk { font-weight: 700; color: var(--fg); font-variant-numeric: tabular-nums; }
+.lb-row .nm { height: 8px; border-radius: 4px; background: rgba(255, 255, 255, .09); width: var(--w); }
+.lb-row .sc { height: 8px; border-radius: 4px; background: rgba(139, 123, 255, .3); width: var(--s); justify-self: end; }
+.lb-row.me { z-index: 2; color: #fff; background: linear-gradient(90deg, rgba(255, 184, 77, .25), rgba(255, 77, 109, .2)); box-shadow: 0 0 0 1px rgba(255, 184, 77, .6), 0 10px 30px -8px rgba(255, 184, 77, .55); }
+.lb-row.me .rk { color: var(--gold); }
+.lb-row.me .nm { background: none; height: auto; width: auto; font-weight: 700; }
+.lb-row.me .sc { background: linear-gradient(90deg, var(--gold), var(--rose)); }
+.lb-row.me.up { animation: bump .5s var(--ease); }
+@keyframes bump { 40% { box-shadow: 0 0 0 2px var(--gold), 0 0 40px rgba(255, 184, 77, .8); } }
+.lb-row.me.final { animation: final 1.4s var(--ease); }
+@keyframes final { 30% { box-shadow: 0 0 0 3px var(--gold), 0 0 60px rgba(255, 184, 77, .9); transform: translateY(calc(var(--r) * 38px)) scale(1.04); } }
+.lb-burst { position: absolute; inset: 0; pointer-events: none; }
+.lb-burst i { position: absolute; width: 7px; height: 7px; border-radius: 2px; animation: confetti 1.4s ease-out forwards; }
+@keyframes confetti { from { opacity: 1; transform: translate(0, 0) rotate(0); } to { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(540deg); } }
 .rank6 { display: flex; align-items: center; gap: var(--s-4); margin: var(--s-4) 0 var(--s-2); padding: var(--s-3) var(--s-4); border-radius: 18px; width: fit-content; max-width: 100%;
   background: linear-gradient(120deg, rgba(255, 184, 77, .14), rgba(255, 77, 109, .1)); border: 1px solid rgba(255, 184, 77, .35); }
 .rank6 > b { font: 800 clamp(2.6rem, 6vw, 3.6rem)/1 var(--f-display); letter-spacing: -.04em; color: var(--gold); }
@@ -836,10 +888,36 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
         </div>
       </article>
 
+      <!-- IEEEXtreme 20.0 -->
+      <article class="xt reveal">
+        <div class="xt-body">
+          <div class="kind"><span class="tag">🏅 6th place locally</span><span class="tag gold">IEEE · global · 24 hours</span></div>
+          <h3>IEEEXtreme <span class="grad">20.0</span></h3>
+          <p class="xt-sub">IEEE's 24-hour global programming competition</p>
+          <p>Thousands of student teams around the world solve the same set of problems for <strong>24 hours straight</strong>. Our team kept going until the clock hit zero and finished <strong>6th locally</strong>.</p>
+          <div class="xt-stats">
+            <div class="clock" aria-hidden="true">
+              <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" class="ct"/><circle cx="60" cy="60" r="52" class="cf" id="clockArc"/></svg>
+              <b id="clockTxt">24:00</b><small>hours</small>
+            </div>
+            <div class="xt-facts">
+              <div><b>#6</b><span>local ranking</span></div>
+              <div><b>24h</b><span>non-stop, one team</span></div>
+              <div><b>C++</b><span>Clue Duel, below</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="lb" aria-label="Scoreboard animation: our team climbs to 6th place">
+          <div class="lb-head"><span>RANK</span><span>TEAM</span><span>LIVE SCOREBOARD</span></div>
+          <div class="lb-rows" id="lbRows"></div>
+          <div class="lb-burst" id="lbBurst" aria-hidden="true"></div>
+          <p class="lb-note">Animated illustration of our final local rank</p>
+        </div>
+      </article>
+
       <div class="comp">
         <div class="comp-text reveal">
-          <div class="kind"><span class="tag">IEEEXtreme 20.0 · C++</span><span class="tag gold">🏅 6th place locally</span></div>
-          <div class="rank6"><b>#<span>6</span></b><div><strong>6th locally</strong><span>IEEEXtreme 20.0 · 24-hour team marathon</span></div></div>
+          <div class="kind"><span class="tag">My favourite problem · C++</span></div>
           <h3>Clue Duel</h3>
           <p style="color:var(--muted); margin:0">Two players race to name the hidden person, weapon and location. My solution treats it as a search over a tiny world, and lets the opponent's own guesses leak information.</p>
           <ol class="steps">
@@ -1217,6 +1295,65 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
   sw.addEventListener("change", () => { userTouched = true; setNet(sw.checked); });
   if (!reduce) setInterval(() => { if (!userTouched) setNet(!sw.checked); }, 3600);
   $("#clock").textContent = new Date().toTimeString().slice(0, 5);
+
+  /* ---------- IEEEXtreme: 24h clock + climbing scoreboard ---------- */
+  (() => {
+    const rowsEl = $("#lbRows"); if (!rowsEl) return;
+    const N = 10, FINAL = 5; // index 5 = 6th place
+    const rows = [];
+    for (let i = 0; i < N; i++) {
+      const me = i === N - 1;
+      const el = document.createElement("div");
+      el.className = "lb-row" + (me ? " me" : "");
+      el.innerHTML = `<span class="rk"></span>${me ? '<span class="nm">Doaa\'s team ★</span>' : `<span class="nm" style="--w:${40 + ((i * 37) % 45)}%"></span>`}<span class="sc" style="--s:${me ? 30 : 92 - i * 7}%"></span>`;
+      rowsEl.appendChild(el); rows.push(el);
+    }
+    const order = rows.slice();
+    const place = () => order.forEach((el, i) => { el.style.setProperty("--r", i); el.querySelector(".rk").textContent = "#" + (i + 1); });
+    const me = rows[N - 1];
+    const burst = () => {
+      const b = $("#lbBurst"); b.innerHTML = "";
+      const y = (FINAL * 38) + 60, cols = ["#ffb84d", "#ff4d6d", "#8b7bff", "#9fd27a"];
+      for (let k = 0; k < 26; k++) {
+        const i = document.createElement("i");
+        i.style.left = (30 + Math.random() * 40) + "%"; i.style.top = y + "px"; i.style.background = cols[k % 4];
+        i.style.setProperty("--dx", (Math.random() * 260 - 130) + "px"); i.style.setProperty("--dy", (Math.random() * -180 - 20) + "px");
+        b.appendChild(i);
+      }
+    };
+    const finalState = () => { order.splice(order.indexOf(me), 1); order.splice(FINAL, 0, me); me.style.setProperty("--s", "60%"); place(); };
+    const clockArc = $("#clockArc"), clockTxt = $("#clockTxt"), C24 = 327;
+    if (reduce) { finalState(); return; }
+    let timers = [];
+    const run = () => {
+      timers.forEach(clearTimeout); timers = [];
+      order.length = 0; rows.forEach((r) => order.push(r)); me.style.setProperty("--s", "30%"); place();
+      // 24h countdown on the clock while we climb
+      const t0 = performance.now(), dur = 4200;
+      const tick = (t) => {
+        const p = Math.min(1, (t - t0) / dur), left = 24 * (1 - p);
+        const h = Math.floor(left), m = Math.floor((left - h) * 60);
+        clockTxt.textContent = String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+        clockArc.style.strokeDashoffset = (C24 * p).toFixed(1);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      let step = 0;
+      const climb = () => {
+        const i = order.indexOf(me);
+        if (i <= FINAL) { me.classList.remove("up"); void me.offsetWidth; me.classList.add("final"); burst(); return; }
+        [order[i - 1], order[i]] = [order[i], order[i - 1]];
+        me.style.setProperty("--s", (30 + (++step) * 8) + "%");
+        place(); me.classList.remove("up"); void me.offsetWidth; me.classList.add("up");
+        timers.push(setTimeout(climb, 850));
+      };
+      me.classList.remove("final");
+      timers.push(setTimeout(climb, 700));
+    };
+    let loop;
+    io(() => { run(); loop = setInterval(run, 9000); }, { threshold: .35 }).observe(rowsEl);
+    place();
+  })();
 
   /* ---------- Sanad deck ---------- */
   (() => {
