@@ -465,6 +465,38 @@ section.block { padding-block: var(--s-8) 0; scroll-margin-top: 72px; }
 .pcpc-stats b { display: block; font: 800 1.6rem/1.1 var(--f-display); color: var(--gold); }
 .pcpc-stats span { font-size: .78rem; color: var(--muted); }
 @media (max-width: 480px) { .pcpc-stats { grid-template-columns: 1fr 1fr; } }
+/* language switch */
+.lang-btn {
+  display: inline-flex; align-items: center; gap: .45rem; height: 36px; padding: 0 .85rem; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line-2); background: var(--glass); color: var(--fg); font: 600 .85rem/1 var(--f-body); transition: border-color .25s, background .25s;
+}
+.lang-btn:hover { border-color: var(--gold); background: var(--gold-soft); }
+.lang-btn svg { width: 16px; height: 16px; transition: transform .6s var(--ease); }
+.lang-btn:hover svg { transform: rotate(180deg); }
+.lang-btn #langTxt { font-family: var(--f-ar); }
+html[lang="ar"] .lang-btn #langTxt { font-family: var(--f-body); }
+@media (max-width: 820px) { .lang-btn { margin-inline-start: auto; } .hire { margin-inline-start: 0 !important; } }
+body.lang-fade main { animation: langFade .5s var(--ease); }
+@keyframes langFade { from { opacity: .2; filter: blur(4px); } }
+
+/* Arabic (RTL) mode */
+html[dir="rtl"] body { font-family: var(--f-ar); }
+html[dir="rtl"] :is(h1, h2, h3, h4, .thesis, .about-text .big, .label, .tag, .chips li, .note, .link, .btn, .pcpc-sub, .xt-sub, .core-label, .lb-head, .lb-note, .stat > span, .num, .who small, .sync, .social small, .hire, .nav a, .brand, .pill, .xt-facts span, .pcpc-stats span, .tip b, .tip em, time, .legend, .meter small, .rec small, .wcard small, .switch) {
+  font-family: var(--f-ar); letter-spacing: normal !important; text-transform: none;
+}
+html[dir="rtl"] :is(.sec-head h2, .scard h3, .pcpc-body h3, .xt-body h3, .cbox h2, .comp-text h3, .tilt h3, .tilt h4) { font-weight: 700; line-height: 1.25; }
+html[dir="rtl"] .name { font-family: var(--f-ar); font-weight: 700; letter-spacing: normal; line-height: 1.15; }
+html[dir="rtl"] .name .ln { overflow: visible; padding-bottom: .1em; }
+html[dir="rtl"] .name .ln.grad-ar { background: linear-gradient(100deg, var(--rose), var(--gold), var(--rose)); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer 6s linear infinite; }
+html[dir="rtl"] .thesis { line-height: 1.6; }
+html[dir="rtl"] :is(.net, pre, .code, .lb, .clock, .tokens, .wallet, .deck, .mail code, .langbar, .repos, .msgs) { direction: ltr; }
+html[dir="rtl"] .lb-row .nm { text-align: left; }
+html[dir="rtl"] :is(.xt-facts b, .pcpc-stats b, .stat b, .chips li) { unicode-bidi: plaintext; }
+html[dir="rtl"] .timeline::before { left: auto; right: 5px; }
+html[dir="rtl"] .timeline li { padding: 0 var(--s-6) var(--s-5) 0; }
+html[dir="rtl"] .timeline li::before { left: auto; right: 0; }
+html[dir="rtl"] .link svg { transform: scaleX(-1); }
+
 /* IEEEXtreme showcase */
 .xt {
   position: relative; overflow: hidden; display: grid; grid-template-columns: 1.1fr .9fr; gap: var(--s-6); align-items: center; margin-bottom: var(--s-7);
@@ -643,6 +675,10 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
     <nav class="nav" aria-label="Sections">
       <a href="#work">Work</a><a href="#xtreme">Competitions</a><a href="#github">GitHub</a><a href="#about">About</a>
     </nav>
+    <button class="lang-btn" id="langBtn" type="button" aria-label="Translate the page to Arabic">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3Z"/></svg>
+      <span id="langTxt" lang="ar">العربية</span>
+    </button>
     <a class="hire magnet" href="#contact"><i></i>Let's talk</a>
   </div>
 </header>
@@ -945,13 +981,17 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
         </div>
       </div>
       <div class="guides">
-        <article class="tilt reveal" lang="ar" dir="rtl">
-          <h4>دليل IEEEXtreme للتحضير</h4>
-          <p>خارطة طريق كاملة كتبتها لزملائي: الخوارزميات الأساسية، قوالب جاهزة بلغات C++ و Java و Python، وخطة تدريب قبل المسابقة.</p>
+        <article class="tilt reveal">
+          <div class="kind"><span class="tag gold">Mentoring</span></div>
+          <h4 class="en">I train the next team</h4>
+          <p>I wrote a complete IEEEXtreme prep roadmap and shared it with students at my university: what to study week by week, ready-to-use contest templates, and how to split problems across a team of three.</p>
+          <ul class="chips"><li>Training plan</li><li>C++ · Java · Python templates</li><li>Team strategy</li></ul>
         </article>
         <article class="tilt reveal">
+          <div class="kind"><span class="tag olive">Toolkit</span></div>
           <h4 class="en">Core techniques sheet</h4>
-          <p>A printable cheat sheet of the patterns that keep coming back: prefix sums, two pointers, BFS/DFS, DP, binary search on the answer.</p>
+          <p>A printable cheat sheet of the patterns that win contests, each with when to use it and its complexity.</p>
+          <ul class="chips"><li>Prefix sums · O(1)</li><li>Two pointers</li><li>BFS / DFS</li><li>Dynamic programming</li><li>Binary search on answer</li></ul>
         </article>
       </div>
     </div>
@@ -1055,6 +1095,8 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isAr = () => document.documentElement.lang === "ar";
+  const T = (en, ar) => isAr() ? ar : en;
   const fine = matchMedia("(pointer: fine)").matches;
   const C = { rose: "#ff4d6d", gold: "#ffb84d", olive: "#9fd27a", violet: "#8b7bff", fg: "#f1ece4" };
 
@@ -1066,10 +1108,12 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
 
   /* ---------- rotating word ---------- */
   const words = ["platforms", "mobile apps", "algorithms", "AI tools", "platforms"];
-  let wi = 0; const rot = $("#rot");
+  const wordsAr = ["منصات", "تطبيقات جوال", "خوارزميات", "أدوات ذكاء اصطناعي", "منصات"];
+  let wi = 0;
   if (!reduce) setInterval(() => {
+    const rot = $("#rot"); if (!rot) return;
     rot.classList.add("cut");
-    setTimeout(() => { wi = (wi + 1) % (words.length - 1); rot.textContent = words[wi]; rot.classList.remove("cut"); rot.classList.remove("swap"); void rot.offsetWidth; rot.classList.add("swap"); }, 900);
+    setTimeout(() => { const r = $("#rot"); if (!r) return; wi = (wi + 1) % (words.length - 1); r.textContent = (T(words, wordsAr))[wi]; r.classList.remove("cut"); r.classList.remove("swap"); void r.offsetWidth; r.classList.add("swap"); }, 900);
   }, 2800);
 
   /* ---------- scroll progress + active nav ---------- */
@@ -1284,7 +1328,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
   const offTxt = ["آخر تحديث: قبل ٣ ساعات", "آخر تحديث: أمس", "آخر تحديث: قبل ٥ ساعات", "آخر تحديث: قبل يومين"];
   const setNet = (on) => {
     sw.checked = on;
-    $("#netLabel").textContent = on ? "Online · synced" : "Offline · tap to reconnect";
+    $("#netLabel").textContent = on ? T("Online · synced", "متصل · تمت المزامنة") : T("Offline · tap to reconnect", "غير متصل · اضغط لإعادة الاتصال");
     banner.classList.toggle("on", on);
     $("#bannerText").textContent = on ? "متصل · تمت المزامنة الآن" : "غير متصل · آخر بيانات محفوظة";
     $$(".upd").forEach((el, i) => {
@@ -1305,7 +1349,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
       const me = i === N - 1;
       const el = document.createElement("div");
       el.className = "lb-row" + (me ? " me" : "");
-      el.innerHTML = `<span class="rk"></span>${me ? '<span class="nm">Doaa\'s team ★</span>' : `<span class="nm" style="--w:${40 + ((i * 37) % 45)}%"></span>`}<span class="sc" style="--s:${me ? 30 : 92 - i * 7}%"></span>`;
+      el.innerHTML = `<span class="rk"></span>${me ? '<span class="nm">' + T("Doaa’s team ★", "فريق دعاء ★") + '</span>' : `<span class="nm" style="--w:${40 + ((i * 37) % 45)}%"></span>`}<span class="sc" style="--s:${me ? 30 : 92 - i * 7}%"></span>`;
       rowsEl.appendChild(el); rows.push(el);
     }
     const order = rows.slice();
@@ -1390,7 +1434,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
     const mids = $$(".msg", msgs).filter((m) => !m.classList.contains("pin") && !m.classList.contains("new"));
     mids.forEach((m, i) => setTimeout(() => m.classList.toggle("out", optimized), (optimized ? i : mids.length - i) * 70));
     tokBar.style.width = optimized ? "19%" : "100%";
-    tokState.textContent = optimized ? "Optimized window" : "Raw history";
+    tokState.textContent = optimized ? T("Optimized window", "النافذة المحسّنة") : T("Raw history", "السجل الكامل");
     animateNum(optimized ? 512 : 97, optimized ? 97 : 512);
   };
   if (reduce) tokenStep(); else setInterval(tokenStep, 3200);
@@ -1413,25 +1457,25 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
   /* ---------- wallet demo ---------- */
   const txs = $("#txs"), bal = $("#bal"), net = $("#walletNet");
   const script = [
-    { d: "Sent to Ahmed", a: -300 }, { d: "Received from Sara", a: +150 }, { d: "Paid internet bill", a: -45 }
+    { d: "Sent to Ahmed", ar: "تحويل إلى أحمد", a: -300 }, { d: "Received from Sara", ar: "استلام من سارة", a: +150 }, { d: "Paid internet bill", ar: "دفع فاتورة الإنترنت", a: -45 }
   ];
   let balance = 800, queue = [];
   const addTx = (tx) => {
     const el = document.createElement("div"); el.className = "tx";
-    el.innerHTML = `<span>${tx.d}</span><span class="amt">${tx.a > 0 ? "+" : ""}${tx.a}</span><span class="st">QUEUED</span>`;
+    el.innerHTML = `<span>${T(tx.d, tx.ar)}</span><span class="amt">${tx.a > 0 ? "+" : ""}${tx.a}</span><span class="st">${T("QUEUED", "بالانتظار")}</span>`;
     txs.prepend(el); queue.push(el);
     balance += tx.a; bal.textContent = balance;
-    net.textContent = `Offline · ${queue.length} waiting to sync`;
+    net.textContent = T(`Offline · ${queue.length} waiting to sync`, `غير متصل · ${queue.length} بانتظار المزامنة`);
     while (txs.children.length > 3) txs.lastChild.remove();
   };
   const syncAll = () => {
-    net.textContent = "Online · syncing…";
-    queue.forEach((el, i) => setTimeout(() => { const st = $(".st", el); if (st) { st.textContent = "SYNCED"; st.classList.add("ok"); } }, 300 + i * 300));
-    setTimeout(() => { net.textContent = "Online · all synced, no duplicates"; }, 400 + queue.length * 300);
+    net.textContent = T("Online · syncing…", "متصل · جارٍ المزامنة…");
+    queue.forEach((el, i) => setTimeout(() => { const st = $(".st", el); if (st) { st.textContent = T("SYNCED", "تمت"); st.classList.add("ok"); } }, 300 + i * 300));
+    setTimeout(() => { net.textContent = T("Online · all synced, no duplicates", "متصل · تمت مزامنة الكل بلا تكرار"); }, 400 + queue.length * 300);
     queue = [];
   };
   const runWallet = () => {
-    txs.innerHTML = ""; balance = 800; bal.textContent = balance; queue = []; net.textContent = "Offline · 0 waiting to sync";
+    txs.innerHTML = ""; balance = 800; bal.textContent = balance; queue = []; net.textContent = T("Offline · 0 waiting to sync", "غير متصل · 0 بانتظار المزامنة");
     script.forEach((tx, i) => setTimeout(() => addTx(tx), 600 + i * 900));
     setTimeout(syncAll, 600 + script.length * 900 + 700);
   };
@@ -1507,9 +1551,9 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
       const snapDesc = Object.fromEntries(SNAPSHOT.repos.map((r) => [r.name, r.description]));
       repos.forEach((r) => { if (!r.description) r.description = snapDesc[r.name]; });
       render({ repos, langs: Object.keys(langs).length ? langs : SNAPSHOT.langs });
-      setSync("live", "Live · synced just now");
+      setSync("live", T("Live · synced just now", "مباشر · تمت المزامنة الآن"));
     } catch (e) {
-      setSync("", "Offline copy · last synced " + fmtDate(SNAPSHOT_AT));
+      setSync("", T("Offline copy · last synced ", "نسخة محفوظة · آخر مزامنة ") + fmtDate(SNAPSHOT_AT));
     } finally { clearTimeout(t); }
   })();
 
@@ -1517,9 +1561,148 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
   const toast = (msg) => { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 1800); };
   $("#copyBtn").addEventListener("click", () => {
     const text = $("#email").textContent;
-    const fallback = () => { const r = document.createRange(); r.selectNodeContents($("#email")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast("Selected. Press Ctrl+C to copy"); };
-    try { navigator.clipboard.writeText(text).then(() => toast("Email copied ✓"), fallback); } catch (e) { fallback(); }
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents($("#email")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast(T("Selected. Press Ctrl+C to copy", "تم التحديد. اضغط Ctrl+C للنسخ")); };
+    try { navigator.clipboard.writeText(text).then(() => toast(T("Email copied ✓", "تم نسخ البريد ✓")), fallback); } catch (e) { fallback(); }
   });
+
+  /* ---------- English ⇄ Arabic ---------- */
+  (() => {
+    const norm = (t) => t.replace(/\s+/g, " ").trim();
+    // whole elements whose English text maps to Arabic markup
+    const H = {
+      "Things I've built": 'أشياء <span class="grad">بنيتُها</span>',
+      "Every project starts from a real constraint: an unstable connection, a token budget, a customer who doesn't want to scroll through 300 trophies. Each card below has a live demo of the idea.": "كل مشروع يبدأ من قيد حقيقي: اتصال غير مستقر، أو ميزانية توكنز محدودة، أو زبون لا يريد التمرير بين 300 كأس. كل بطاقة بالأسفل فيها عرض حيّ للفكرة.",
+      "A digital bridge to Gaza's talent. Sanad connects freelancers and service providers in Gaza with local and international clients: browse services, post requests, join workshops and Sanad Academy, and order straight on WhatsApp.": "جسر رقمي إلى كفاءات غزة. يربط سند <strong>المستقلين وأصحاب الخدمات في غزة</strong> بعملاء محليين ودوليين: تصفّح الخدمات، انشر طلبك، انضم إلى الورشات وأكاديمية سند، و<strong>اطلب مباشرة عبر واتساب</strong>.",
+      "A daily survival assistant for Gaza. It finds services, doctors and essentials, and it works fully offline. When a connection appears it syncs quietly, and every live item shows when it was last updated, so the app never pretends old data is fresh.": "مساعد يومي للحياة في غزة. يجد الخدمات والأطباء والاحتياجات الأساسية، و<strong>يعمل بالكامل دون إنترنت</strong>. عند توفّر الاتصال يتزامن بهدوء، وكل معلومة حيّة تعرض <strong>وقت آخر تحديث</strong>، فلا يوهم التطبيق أحداً بأن معلومة قديمة حديثة.",
+      "Sending a whole chat history to an LLM is slow and expensive. This engine trims it first: pinned system prompts and the latest turns always stay, stale turns get evicted to fit the token budget.": "إرسال سجل المحادثة كاملاً إلى نموذج لغوي بطيء ومكلف. هذا المحرك يقلّصه أولاً: <strong>تعليمات النظام المثبّتة</strong> و<strong>أحدث الرسائل</strong> تبقى دائماً، والرسائل القديمة تُحذف لتناسب ميزانية التوكنز.",
+      "A guided shopping prototype for Global Medal, Kuwait's first trophy store. Six short questions replace browsing hundreds of medals. A deterministic scoring engine picks three options, explains each match, then hands the request to WhatsApp.": "نموذج تسوّق موجَّه لشركة Global Medal، أول متجر كؤوس في الكويت. <strong>ستة أسئلة قصيرة</strong> بدل تصفّح مئات الميداليات. محرك تقييم ثابت يختار ثلاثة خيارات ويشرح سبب كل اختيار، ثم يرسل الطلب عبر واتساب.",
+      "A digital wallet that keeps working without internet: send, receive and pay behind a PIN, keep a full transaction history, then sync when the connection returns without ever processing a payment twice.": "محفظة رقمية تعمل دون إنترنت: أرسل واستلم وادفع برمز PIN، واحتفظ بسجل كامل للعمليات، ثم <strong>زامن عند عودة الاتصال</strong> دون تنفيذ أي دفعة مرتين.",
+      "A bilingual guide in ten chapters, from the first git init to rebase, cherry-pick and the errors that scare beginners off.": 'دليل ثنائي اللغة في عشرة فصول، من أول <span class="mono">git init</span> حتى rebase و cherry-pick والأخطاء التي تُخيف المبتدئين.',
+      "Medals under pressure": 'ميداليات <span class="grad">تحت الضغط</span>',
+      "Contests taught me to think fast, split work across a team, and prove an idea before I write it. Here are the two that shaped me most.": "علّمتني المسابقات التفكير بسرعة، وتوزيع العمل داخل الفريق، وإثبات الفكرة قبل كتابتها. هاتان أكثر مسابقتين صنعتا الفرق عندي.",
+      "I finished 2nd place at PCPC 2026, Palestine's ICPC-style contest for university teams. A team shares one computer and races the clock on a set of algorithmic problems. Every wrong submission costs time, so you prove an idea on paper before anyone types.": "حصلتُ على <strong>المركز الثاني</strong> في PCPC 2026، مسابقة فلسطين لفرق الجامعات على نمط ICPC. يتشارك الفريق حاسوباً واحداً ويسابق الوقت على مجموعة مسائل خوارزمية. كل إجابة خاطئة تكلّف وقتاً، لذلك نثبت الفكرة على الورق قبل أن يكتب أحد سطراً.",
+      "Thousands of student teams around the world solve the same set of problems for 24 hours straight. Our team kept going until the clock hit zero and finished 6th locally.": "آلاف الفرق الطلابية حول العالم تحلّ المسائل نفسها <strong>24 ساعة متواصلة</strong>. واصل فريقنا حتى وصلت الساعة إلى الصفر، وأنهينا <strong>في المركز السادس محلياً</strong>.",
+      "Shrink the world. One hidden card per category, so the state is just (person, weapon, location).": "<span><b>صغّر العالم.</b> بطاقة مخفية واحدة لكل فئة، فتصبح الحالة مجرد (شخص، سلاح، مكان).</span>",
+      "Ask three at once. Each \"shown\" reply removes exactly one candidate, whatever the opponent picks.": "<span><b>اسأل عن ثلاثة معاً.</b> كل رد «مكشوف» يحذف مرشحاً واحداً بالضبط، مهما اختار الخصم.</span>",
+      "Learn the bot. Its guesses hint at the answer; how much to trust them is learned during the game.": "<span><b>تعلّم سلوك البوت.</b> تخميناته تلمّح إلى الإجابة، ومقدار الثقة بها يُتعلَّم أثناء اللعب.</span>",
+      "Decide with DP. A small dynamic program over the race says when to stop asking and accuse.": "<span><b>قرّر بالبرمجة الديناميكية.</b> برنامج DP صغير يحدّد متى تتوقف عن السؤال وتعلن الاتهام.</span>",
+      "Live from @DoaaAlyazgi": 'مباشرة من <span class="grad">@DoaaAlyazgi</span>',
+      "Learning in public": 'أتعلّم <span class="grad">أمام الجميع</span>',
+      "I'm a computer engineering student from Palestine. Growing up where the internet comes and goes made me care about software that degrades gracefully instead of failing.": "أدرس هندسة الحاسوب في فلسطين. نشأتُ حيث يأتي الإنترنت ويذهب، فصار يهمّني برنامج <em>يتراجع بلطف</em> بدل أن يتعطّل.",
+      "Feb 2026Joined GitHub · first Java OOP project, Smart Offline Wallet": "<time>فبراير 2026</time>انضممتُ إلى GitHub · أول مشروع Java بالبرمجة الكائنية: المحفظة الذكية",
+      "Jul 2026Built Mudabbir in Flutter with Clean Architecture": "<time>يوليو 2026</time>بنيتُ مُدبّر بـ Flutter وبنية Clean Architecture",
+      "Aug 2026Published the bilingual Git & GitHub Handbook": "<time>أغسطس 2026</time>نشرتُ دليل Git و GitHub ثنائي اللغة",
+      "Aug 2026Launched Sanad, a platform for Gaza's freelancers": "<time>أغسطس 2026</time>أطلقتُ سند، منصة لمستقلي غزة",
+      "Sep 2026Shipped a React + TypeScript prototype for Global Medal": "<time>سبتمبر 2026</time>سلّمتُ نموذج React + TypeScript لشركة Global Medal",
+      "Oct 2026Prompt Window Optimizer · 6th place locally at IEEEXtreme 20.0": "<time>أكتوبر 2026</time>Prompt Window Optimizer · المركز السادس محلياً في IEEEXtreme 20.0",
+      "20262nd place at PCPC 2026, the Palestinian Collegiate Programming Contest": "<time>2026</time>المركز الثاني في PCPC 2026، المسابقة الفلسطينية الجامعية للبرمجة",
+      "Have something worth building?": 'عندك فكرة <span class="grad">تستحق البناء؟</span>'
+    };
+    // single text pieces (buttons, labels, tags, chips)
+    const W = {
+      "Doaa AL Yazji": "دعاء اليازجي", "Work": "أعمالي", "Competitions": "المسابقات", "About": "عنّي", "Let's talk": "تواصل معي",
+      "OPEN": "متاح", "Palestine · software engineer": "فلسطين · هندسة برمجيات", "Explore my work": "استكشف أعمالي",
+      "Software Engineering & Architecture": "هندسة البرمجيات والمعمارية",
+      "Offline-First Specialist": "خبرة العمل دون إنترنت", "Mudabbir · Hive + sync": "مُدبّر · Hive + مزامنة",
+      "PCPC 2026 · 2nd Place": "PCPC 2026 · المركز الثاني", "competitive programming": "البرمجة التنافسية",
+      "IEEEXtreme 20.0 · 6th locally": "IEEEXtreme 20.0 · السادس محلياً", "24-hour team marathon": "ماراثون فرق لمدة 24 ساعة",
+      "Sanad · live platform": "سند · منصة حيّة", "PWA for Gaza's freelancers": "تطبيق ويب لمستقلي غزة",
+      "Algorithms": "الخوارزميات", "System Design": "تصميم الأنظمة", "Algorithms ★": "الخوارزميات ★", "System Design ★": "تصميم الأنظمة ★",
+      "projects built, one live: Sanad": "مشاريع بنيتُها، أحدها حيّ: سند", "public GitHub repositories": "مستودعات عامة على GitHub",
+      "locally at IEEEXtreme 20.0": "محلياً في IEEEXtreme 20.0", "Arabic RTL + English interfaces": "واجهات عربية وإنجليزية", "th": "", "lang": "لغة",
+      "Selected work": "أعمال مختارة", "01 / Featured": "01 / مميّز", "Web platform · PWA": "منصة ويب · PWA", "● Live": "● حيّ",
+      "2026 · design, brand & development": "2026 · تصميم وهوية وتطوير", "Visit live site": "زيارة الموقع", "View code": "عرض الكود",
+      "Flutter · Mobile": "Flutter · جوال", "Offline-first": "يعمل دون إنترنت", "Built July 2026 · private repository": "يوليو 2026 · مستودع خاص",
+      "Offline · tap to reconnect": "غير متصل · اضغط لإعادة الاتصال", "Online · synced": "متصل · تمت المزامنة",
+      "Java · AI tooling": "Java · أدوات ذكاء اصطناعي", "Oct 2026": "أكتوبر 2026", "Sep 2026": "سبتمبر 2026",
+      "Raw history": "السجل الكامل", "Optimized window": "النافذة المحسّنة", "tokens": "توكن",
+      "Pinned system prompt": "تعليمات النظام المثبّتة", "Old turns": "رسائل قديمة", "Latest turns": "أحدث الرسائل",
+      "Client concept": "نموذج لعميل", "Scoring engine": "محرك تقييم",
+      "Crystal star award": "جائزة نجمة كريستال", "Best match · occasion + logo + premium style": "الأنسب · المناسبة + الشعار + طابع فاخر",
+      "Gold medal with ribbon": "ميدالية ذهبية بشريط", "Best value · fits 10–20 KD for 50 pieces": "أفضل قيمة · ضمن 10–20 د.ك لـ 50 قطعة",
+      "Engraved wooden plaque": "درع خشبي محفور", "Another strong match · ready in 1–2 weeks": "خيار قوي آخر · جاهز خلال 1–2 أسبوع",
+      "Java · OOP": "Java · برمجة كائنية", "Mar 2026 · my first OOP project": "مارس 2026 · أول مشروع OOP لي",
+      "BALANCE · DOAA": "الرصيد · دعاء", "Offline · 0 waiting to sync": "غير متصل · 0 بانتظار المزامنة",
+      "Open source · Teaching": "مفتوح المصدر · تعليم", "★ 2 stars": "★ نجمتان", "Read": "اقرأ",
+      "Live from GitHub": "مباشرة من GitHub", "All my repositories": "كل مستودعاتي", "Browse": "تصفّح",
+      "Every public repository, synced live from the GitHub API, with languages and last updates.": "كل مستودع عام، متزامن مباشرة من GitHub API، مع اللغات وآخر التحديثات.",
+      "Competitive programming": "البرمجة التنافسية", "🏆 Silver · 2nd place": "🏆 فضية · المركز الثاني", "Team contest · ICPC style": "مسابقة فرق · نمط ICPC",
+      "Palestinian Collegiate Programming Contest": "المسابقة الفلسطينية الجامعية للبرمجة",
+      "Graphs": "المخططات", "Dynamic programming": "البرمجة الديناميكية", "Greedy & math": "الخوارزميات الجشعة والرياضيات", "Teamwork under pressure": "عمل جماعي تحت الضغط",
+      "2nd": "الثاني", "place in Palestine": "على مستوى فلسطين", "person team, 1 computer": "أعضاء، حاسوب واحد", "my contest language": "لغة المسابقات عندي",
+      "🏅 6th place locally": "🏅 المركز السادس محلياً", "IEEE · global · 24 hours": "IEEE · عالمية · 24 ساعة",
+      "IEEE's 24-hour global programming competition": "مسابقة IEEE العالمية للبرمجة لمدة 24 ساعة",
+      "local ranking": "الترتيب المحلي", "non-stop, one team": "متواصلة، فريق واحد", "Clue Duel, below": "Clue Duel بالأسفل", "hours": "ساعة",
+      "RANK": "الترتيب", "TEAM": "الفريق", "LIVE SCOREBOARD": "لوحة النتائج المباشرة",
+      "Animated illustration of our final local rank": "رسم متحرك يوضّح ترتيبنا المحلي النهائي", "Doaa’s team ★": "فريق دعاء ★",
+      "My favourite problem · C++": "مسألتي المفضلة · C++‎",
+      "Two players race to name the hidden person, weapon and location. My solution treats it as a search over a tiny world, and lets the opponent's own guesses leak information.": "لاعبان يتسابقان لمعرفة الشخص والسلاح والمكان المخفيين. حلّي يتعامل معها كبحث في عالم صغير جداً، ويستفيد من تخمينات الخصم نفسها لكشف المعلومات.",
+      "Mentoring": "إرشاد", "I train the next team": "أدرّب الفريق القادم",
+      "I wrote a complete IEEEXtreme prep roadmap and shared it with students at my university: what to study week by week, ready-to-use contest templates, and how to split problems across a team of three.": "كتبتُ خارطة طريق كاملة للتحضير لـ IEEEXtreme وشاركتها مع طلاب جامعتي: ماذا تدرس أسبوعاً بأسبوع، وقوالب جاهزة للمسابقات، وكيف توزّع المسائل في فريق من ثلاثة.",
+      "Training plan": "خطة تدريب", "C++ · Java · Python templates": "قوالب C++ · Java · Python", "Team strategy": "استراتيجية الفريق",
+      "Toolkit": "عدّة العمل", "Core techniques sheet": "ورقة التقنيات الأساسية",
+      "A printable cheat sheet of the patterns that win contests, each with when to use it and its complexity.": "ورقة مراجعة قابلة للطباعة لأنماط تربح المسابقات، مع متى يُستخدم كل نمط وما تعقيده.",
+      "Prefix sums · O(1)": "المجاميع التراكمية · O(1)", "Two pointers": "المؤشران", "Binary search on answer": "البحث الثنائي على الإجابة",
+      "Connected to GitHub": "مرتبط بـ GitHub",
+      "This section talks to the GitHub API the same way Mudabbir talks to its server: it syncs when it can, and tells you how fresh the data is when it can't.": "هذا القسم يتواصل مع GitHub API كما يتواصل مُدبّر مع خادمه: يتزامن عندما يستطيع، ويخبرك بمدى حداثة البيانات عندما لا يستطيع.",
+      "@DoaaAlyazgi · Palestine": "@DoaaAlyazgi · فلسطين", "Syncing with GitHub…": "جارٍ المزامنة مع GitHub…", "Live · synced just now": "مباشر · تمت المزامنة الآن",
+      "Engineer by training, teacher by habit. I learn something, build with it, then write it down so the next person gets there faster.": "أدرس الهندسة، وأعلّم بحكم العادة. أتعلّم شيئاً، أبني به، ثم أوثّقه ليصل غيري أسرع.",
+      "I've competed in several programming contests, which sharpened my problem-solving and my ability to work under pressure. I volunteer in programming communities for beginners, giving guidance and practical advice, and I write the guides I wish I'd had.": "شاركتُ في عدة مسابقات برمجة صقلت مهارتي في حل المشكلات والعمل تحت الضغط. أتطوّع في مجتمعات برمجية للمبتدئين، أقدّم التوجيه والنصائح العملية، وأكتب الأدلة التي تمنّيتُ لو كانت عندي.",
+      "Right now I'm going deeper into databases with a SQL Server course, practising Python for AI, and improving my English every day. I'm looking for a team where I can contribute, learn from people better than me, and help build something useful.": "حالياً أتعمّق في قواعد البيانات عبر دورة SQL Server، وأتدرّب على Python للذكاء الاصطناعي، وأحسّن لغتي الإنجليزية كل يوم. أبحث عن فريق أساهم فيه، وأتعلّم ممن هم أفضل مني، ونبني معاً شيئاً مفيداً.",
+      "Languages": "اللغات", "Frameworks": "أطر العمل", "Foundations": "الأساسيات", "Tools & languages spoken": "الأدوات واللغات المحكية",
+      "Data structures": "هياكل البيانات", "Databases": "قواعد البيانات", "Offline sync": "المزامنة دون إنترنت",
+      "Arabic · native": "العربية · اللغة الأم", "English": "الإنجليزية",
+      "Contact": "تواصل", "Copy email": "نسخ البريد", "Email": "البريد", "© 2026 Doaa AL Yazji · Palestine": "© 2026 دعاء اليازجي · فلسطين"
+    };
+    const SEL = "h1,h2,h3,h4,p,li";
+    const skip = (n) => n.closest && n.closest("script,style,pre,svg,.code,#repos,#langs,.phone,[lang='ar']:not(html)");
+    const saved = new Map();
+    const btn = $("#langBtn"), txt = $("#langTxt");
+    function toArabic() {
+      // the name: whole words, never split letter by letter in Arabic
+      const h1 = $(".name");
+      saved.set(h1, h1.innerHTML);
+      h1.innerHTML = '<span class="ln">دعاء</span><span class="ln grad-ar">اليازجي</span>';
+      h1.setAttribute("aria-label", "دعاء اليازجي");
+      const th = $(".thesis");
+      saved.set(th, th.innerHTML);
+      th.innerHTML = 'أبني <span class="rot" id="rot">منصات</span> تحلّ <em>مشكلات حقيقية.</em>';
+      const lede = $(".lede");
+      saved.set(lede, lede.innerHTML);
+      lede.innerHTML = 'أعمل في هندسة البرمجيات وأدرس هندسة الحاسوب في فلسطين. أنشأتُ <strong>سند</strong>، منصة حيّة تربط المستقلين في غزة بالعالم. حصلتُ على <strong>المركز الثاني في PCPC 2026</strong> و<strong>المركز السادس محلياً في IEEEXtreme 20.0</strong>، وأبني <strong>تطبيقات Flutter تعمل دون إنترنت</strong> و<strong>محركات Java سريعة</strong>.';
+      document.querySelectorAll(SEL).forEach((el) => {
+        if (!el.isConnected || saved.has(el) || skip(el)) return;
+        const k = norm(el.textContent);
+        if (H[k] !== undefined && !el.querySelector("svg,img,canvas,input")) { saved.set(el, el.innerHTML); el.innerHTML = H[k]; }
+      });
+      const tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const nodes = []; let n; while ((n = tw.nextNode())) nodes.push(n);
+      nodes.forEach((t) => {
+        if (skip(t.parentElement)) return;
+        const k = norm(t.nodeValue);
+        if (k && W[k] !== undefined) { saved.set(t, t.nodeValue); t.nodeValue = t.nodeValue.replace(t.nodeValue.trim(), W[k]); }
+      });
+    }
+    function toEnglish() {
+      [...saved.entries()].reverse().forEach(([k, v]) => { if (k.nodeType === 3) k.nodeValue = v; else k.innerHTML = v; });
+      saved.clear();
+      $(".name").setAttribute("aria-label", "Doaa AL Yazji");
+    }
+    function setLang(ar, animate) {
+      const root = document.documentElement;
+      if (ar === (root.lang === "ar")) return;
+      if (ar) { root.lang = "ar"; root.dir = "rtl"; toArabic(); } else { toEnglish(); root.lang = "en"; root.dir = "ltr"; }
+      txt.textContent = ar ? "English" : "العربية";
+      txt.setAttribute("lang", ar ? "en" : "ar");
+      btn.setAttribute("aria-label", ar ? "Switch the page to English" : "Translate the page to Arabic");
+      document.title = ar ? "دعاء اليازجي" : "Doaa AL Yazji";
+      if (animate && !reduce) { document.body.classList.remove("lang-fade"); void document.body.offsetWidth; document.body.classList.add("lang-fade"); }
+      try { localStorage.setItem("doaa-lang", ar ? "ar" : "en"); } catch (e) {}
+    }
+    document.documentElement.lang = "en";
+    btn.addEventListener("click", () => setLang(document.documentElement.lang !== "ar", true));
+    try { if (localStorage.getItem("doaa-lang") === "ar") setTimeout(() => setLang(true, false), 900); } catch (e) {}
+  })();
 })();
 </script>
 
