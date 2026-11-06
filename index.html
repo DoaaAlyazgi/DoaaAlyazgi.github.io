@@ -137,7 +137,7 @@ main, header, footer { position: relative; z-index: 2; }
 }
 .rot { position: relative; display: inline-block; color: var(--gold); white-space: nowrap; }
 .rot::after {
-  content: ""; position: absolute; left: -3%; right: -3%; top: 55%; height: 3px; border-radius: 3px; background: var(--rose);
+  content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--rose), var(--gold));
   transform: scaleX(0); transform-origin: left; transition: transform .45s var(--ease);
 }
 .rot.cut::after { transform: scaleX(1); }
@@ -546,9 +546,9 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
           <span class="ln" aria-hidden="true" data-split>Doaa</span>
           <span class="ln grad" aria-hidden="true" data-split>AL Yazji</span>
         </h1>
-        <p class="thesis">I build software that keeps working when the <span class="rot" id="rot">network</span> <em>doesn't.</em></p>
-        <p class="lede">Computer engineering undergraduate. I built <strong>Sanad</strong>, a platform for Gaza's freelancers.
-          I also make <strong>offline-first apps</strong> in Flutter and Java and small engines that make <strong>AI cheaper to run</strong>, and I spend my nights on <strong>competitive programming</strong>.</p>
+        <p class="thesis">I engineer <span class="rot" id="rot">platforms</span> that solve <em>real problems.</em></p>
+        <p class="lede">Software engineer and computer engineering student from Palestine. Creator of <strong>Sanad</strong>, a live platform connecting Gaza's freelancers with the world.
+          <strong>2nd place at PCPC 2026</strong>, IEEEXtreme 20.0 competitor, and builder of <strong>offline-first Flutter apps</strong> and fast <strong>Java engines</strong>.</p>
         <div class="cta">
           <a class="btn primary magnet" href="#work">Explore my work
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
@@ -892,7 +892,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: var(--s-4); f
   });
 
   /* ---------- rotating word ---------- */
-  const words = ["network", "electricity", "signal", "server", "network"];
+  const words = ["platforms", "mobile apps", "algorithms", "AI tools", "platforms"];
   let wi = 0; const rot = $("#rot");
   if (!reduce) setInterval(() => {
     rot.classList.add("cut");
