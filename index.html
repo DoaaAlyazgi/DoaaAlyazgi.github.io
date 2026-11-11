@@ -549,7 +549,7 @@ html[dir="rtl"] .link svg { transform: scaleX(-1); }
 /* Gapper team with links */
 .gp-team2 { display: grid; gap: .5rem; }
 .gp-team-h { font: 700 .66rem/1 var(--f-mono); color: #9fd27a; text-transform: uppercase; letter-spacing: .12em; }
-.tm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .45rem; }
+.tm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: .45rem; }
 @media (max-width: 560px) { .tm-grid { grid-template-columns: 1fr; } }
 .tm { display: flex; align-items: center; gap: .55rem; padding: .5rem .55rem; border-radius: 12px; background: rgba(255, 255, 255, .035); border: 1px solid var(--line); min-width: 0;
   transition: border-color .3s, transform .3s var(--ease), background .3s; }
