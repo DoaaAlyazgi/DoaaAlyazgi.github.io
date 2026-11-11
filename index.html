@@ -288,8 +288,9 @@ section.block { padding-block: var(--s-8) 0; scroll-margin-top: 72px; }
 
 /* ---------- stacking project cards ---------- */
 .stack { display: grid; gap: var(--s-6); }
+@supports (animation-timeline: view()) { @media (prefers-reduced-motion: no-preference) { .stack .scard { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 160px; } } }
 .scard {
-  position: sticky; top: calc(84px + var(--n) * 18px);
+  position: relative;
   display: grid; grid-template-columns: 1.05fr .95fr; border-radius: 28px; overflow: hidden;
   background: linear-gradient(160deg, #161a27 0%, #0f121b 100%); border: 1px solid var(--line-2);
   box-shadow: 0 -20px 60px -20px rgba(0,0,0,.8), 0 40px 80px -40px rgba(0,0,0,.9);
