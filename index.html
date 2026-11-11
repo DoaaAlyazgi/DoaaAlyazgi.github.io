@@ -569,39 +569,6 @@ html[dir="rtl"] .link svg { transform: scaleX(-1); }
 .tm-me { font: 700 .62rem/1 var(--f-mono); color: #0b0d14; background: #9fd27a; padding: .3rem .45rem; border-radius: 999px; text-transform: uppercase; }
 html[dir="rtl"] :is(.tm-id b, .tm-id small, .gp-team-h) { font-family: var(--f-ar); letter-spacing: normal; }
 
-/* collaborators */
-.people { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-4); }
-@media (max-width: 760px) { .people { grid-template-columns: 1fr; } }
-.person { position: relative; border-radius: 24px; padding: var(--s-5); background: var(--glass); border: 1px solid var(--line); display: flex; flex-direction: column; gap: var(--s-3); overflow: hidden; min-width: 0;
-  transition: transform .4s var(--ease), border-color .4s; }
-.person::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none; opacity: 0; transition: opacity .4s;
-  background: conic-gradient(from var(--ang, 0deg), var(--c1), var(--c2), transparent 40%, transparent 60%, var(--c1));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; animation: spinAng 4s linear infinite; }
-@property --ang { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
-@keyframes spinAng { to { --ang: 360deg; } }
-.person::after { content: ""; position: absolute; width: 220px; height: 220px; right: -70px; top: -90px; border-radius: 50%; pointer-events: none; opacity: .18; filter: blur(30px); background: linear-gradient(135deg, var(--c1), var(--c2)); transition: opacity .4s; }
-.person:hover { transform: translateY(-6px); border-color: transparent; }
-.person:hover::before { opacity: 1; }
-.person:hover::after { opacity: .32; }
-.p-top { display: flex; align-items: center; gap: var(--s-3); position: relative; z-index: 1; }
-.p-av { width: 56px; height: 56px; border-radius: 18px; flex: none; display: grid; place-items: center; font: 800 1.05rem/1 var(--f-mono); color: #fff;
-  background: linear-gradient(135deg, var(--c1), var(--c2)); box-shadow: 0 12px 30px -10px var(--c1); transition: transform .5s var(--ease); }
-.person:hover .p-av { transform: rotate(-8deg) scale(1.08); }
-.p-id { min-width: 0; }
-.p-id h3 { font: 700 1.3rem/1.2 var(--f-display); letter-spacing: -.01em; }
-.p-role { margin: .2rem 0 0; font: 500 .82rem/1.4 var(--f-mono); color: var(--gold); }
-.p-bio { margin: 0; color: var(--muted); font-size: .95rem; position: relative; z-index: 1; }
-.p-tags { display: flex; gap: .4rem; flex-wrap: wrap; position: relative; z-index: 1; }
-.p-tags span { font: 500 .74rem/1 var(--f-mono); padding: .4rem .6rem; border-radius: 999px; border: 1px solid var(--line-2); color: var(--muted); }
-.p-links { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: auto; position: relative; z-index: 1; }
-.p-btn { display: inline-flex; align-items: center; gap: .45rem; padding: .6rem .95rem; border-radius: 999px; text-decoration: none; font: 600 .86rem/1 var(--f-body);
-  border: 1px solid var(--line-2); color: var(--fg); background: rgba(0, 0, 0, .2); transition: background .25s, border-color .25s, transform .25s var(--ease); }
-.p-btn svg { width: 16px; height: 16px; }
-.p-btn:hover { transform: translateY(-2px); border-color: var(--fg); }
-.p-btn.li { background: #0a66c2; border-color: #0a66c2; color: #fff; }
-.p-btn.li:hover { background: #0b74de; }
-html[dir="rtl"] :is(.p-id h3, .p-role, .p-bio, .p-tags span, .p-btn) { font-family: var(--f-ar); letter-spacing: normal; }
-
 /* IEEEXtreme showcase */
 .xt {
   position: relative; overflow: hidden; display: grid; grid-template-columns: 1.1fr .9fr; gap: var(--s-6); align-items: center; margin-bottom: var(--s-7);
@@ -1817,7 +1784,6 @@ html[dir="rtl"] :is(.fe-quote, .fe-sign) { font-family: var(--f-ar); letter-spac
       "20262nd place at PCPC 2026, the Palestinian Collegiate Programming Contest": "<time>2026</time>المركز الثاني في PCPC 2026، المسابقة الفلسطينية الجامعية للبرمجة",
       "A platform that guides CS and Computer Engineering students to the skills they need each year and semester: why each skill matters, how to practice it, and how far they've come.": "منصة ترشد <strong>طلاب علم الحاسوب وهندسة الحاسوب</strong> إلى المهارات التي يحتاجونها في كل سنة وفصل: لماذا تهمّ كل مهارة، وكيف يتدرّبون عليها، وإلى أين وصلوا.",
       "My roleQA Engineer · Testing. I tested the screens and user flows in Arabic and English, on desktop and mobile, so every release shipped stable.": '<span class="gp-role-k">دوري</span><span><strong>مهندسة جودة · اختبار.</strong> اختبرتُ الشاشات ومسارات المستخدم بالعربية والإنجليزية، على الحاسوب والجوال، ليخرج كل إصدار مستقراً.</span>',
-      "People I build with": 'أشخاص <span class="grad">أبني معهم</span>',
       "Have something worth building?": 'عندك فكرة <span class="grad">تستحق البناء؟</span>'
     };
     // single text pieces (buttons, labels, tags, chips)
