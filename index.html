@@ -545,6 +545,29 @@ html[dir="rtl"] .timeline li { padding: 0 var(--s-6) var(--s-5) 0; }
 html[dir="rtl"] .timeline li::before { left: auto; right: 0; }
 html[dir="rtl"] .link svg { transform: scaleX(-1); }
 
+/* Gapper team with links */
+.gp-team2 { display: grid; gap: .5rem; }
+.gp-team-h { font: 700 .66rem/1 var(--f-mono); color: #9fd27a; text-transform: uppercase; letter-spacing: .12em; }
+.tm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .45rem; }
+@media (max-width: 560px) { .tm-grid { grid-template-columns: 1fr; } }
+.tm { display: flex; align-items: center; gap: .55rem; padding: .5rem .55rem; border-radius: 12px; background: rgba(255, 255, 255, .035); border: 1px solid var(--line); min-width: 0;
+  transition: border-color .3s, transform .3s var(--ease), background .3s; }
+.tm:hover { border-color: var(--c); transform: translateY(-2px); background: rgba(255, 255, 255, .06); }
+.tm-av { width: 32px; height: 32px; flex: none; border-radius: 10px; display: grid; place-items: center; font: 700 .68rem/1 var(--f-mono); color: #0b0d14; background: var(--c); }
+.tm.me { border-color: rgba(159, 210, 122, .45); background: rgba(159, 210, 122, .07); }
+.tm.me .tm-av { box-shadow: 0 0 14px rgba(159, 210, 122, .7); }
+.tm-id { min-width: 0; flex: 1; display: grid; }
+.tm-id b { font: 600 .82rem/1.2 var(--f-body); color: var(--fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tm-id small { font-size: .68rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tm-btns { display: flex; gap: .3rem; flex: none; }
+.tm-btn { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; color: var(--fg); border: 1px solid var(--line-2); background: rgba(0, 0, 0, .25); transition: transform .25s var(--ease), background .25s, border-color .25s; }
+.tm-btn svg { width: 14px; height: 14px; }
+.tm-btn:hover { transform: translateY(-2px) scale(1.08); border-color: var(--fg); }
+.tm-btn.li { background: #0a66c2; border-color: #0a66c2; color: #fff; }
+.tm-btn.li:hover { background: #0b74de; }
+.tm-me { font: 700 .62rem/1 var(--f-mono); color: #0b0d14; background: #9fd27a; padding: .3rem .45rem; border-radius: 999px; text-transform: uppercase; }
+html[dir="rtl"] :is(.tm-id b, .tm-id small, .gp-team-h) { font-family: var(--f-ar); letter-spacing: normal; }
+
 /* collaborators */
 .people { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-4); }
 @media (max-width: 760px) { .people { grid-template-columns: 1fr; } }
@@ -890,12 +913,9 @@ html[dir="rtl"] :is(.fe-quote, .fe-sign) { font-family: var(--f-ar); letter-spac
               <div><b>AR·EN</b><span>bilingual</span></div>
             </div>
             <div class="gp-role"><span class="gp-role-k">My role</span><span><strong>QA Engineer · Testing.</strong> I tested the screens and user flows in Arabic and English, on desktop and mobile, so every release shipped stable.</span></div>
-            <div class="gp-team" aria-label="Team of 5">
-              <a class="gp-av" href="https://www.linkedin.com/in/%D9%85%D8%AD%D9%85%D8%AF-%D8%AD%D9%85%D8%AF%D8%A7%D9%86-0646453b0/" target="_blank" rel="noopener" style="--c:#ff4d6d" data-tip="Mohammed Hamdan · Lead Software Engineer" aria-label="Mohammed Hamdan on LinkedIn">MH</a>
-              <a class="gp-av" href="https://www.linkedin.com/in/nancy-aburuqa-4ba072351/" target="_blank" rel="noopener" style="--c:#8b7bff" data-tip="Nancy Aburuqa · Project Manager" aria-label="Nancy Aburuqa on LinkedIn">NA</a>
-              <a class="gp-av" href="https://www.linkedin.com/in/aseel-aburuqa-078781425/" target="_blank" rel="noopener" style="--c:#2fc4d8" data-tip="Aseel Aburuqa · UI/UX Designer" aria-label="Aseel Aburuqa on LinkedIn">AA</a>
-              <span class="gp-av me" style="--c:#9fd27a" data-tip="Doaa AL Yazji · QA Engineer (me)">DA</span>
-              <span class="gp-team-t">Team · 4 people · tap to open LinkedIn</span>
+            <div class="gp-team2" aria-label="Gapper team">
+              <div class="gp-team-h">Team · 4 people</div>
+              <div class="tm-grid"><div class="tm" style="--c:#ff4d6d"><span class="tm-av">MH</span><span class="tm-id"><b>Mohammed Hamdan</b><small>Lead Software Engineer</small></span><span class="tm-btns"><a class="tm-btn" href="https://mohammed131207.github.io/portfolio/" target="_blank" rel="noopener" aria-label="Mohammed Hamdan portfolio" title="Portfolio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3Z"/></svg></a><a class="tm-btn li" href="https://www.linkedin.com/in/%D9%85%D8%AD%D9%85%D8%AF-%D8%AD%D9%85%D8%AF%D8%A7%D9%86-0646453b0/" target="_blank" rel="noopener" aria-label="Mohammed Hamdan on LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a></span></div><div class="tm" style="--c:#8b7bff"><span class="tm-av">NA</span><span class="tm-id"><b>Nancy Aburuqa</b><small>Project Manager · Product Owner</small></span><span class="tm-btns"><a class="tm-btn" href="https://portfolio.nancyaburuqa.workers.dev/" target="_blank" rel="noopener" aria-label="Nancy Aburuqa portfolio" title="Portfolio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3Z"/></svg></a><a class="tm-btn li" href="https://www.linkedin.com/in/nancy-aburuqa-4ba072351/" target="_blank" rel="noopener" aria-label="Nancy Aburuqa on LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a></span></div><div class="tm" style="--c:#2fc4d8"><span class="tm-av">AA</span><span class="tm-id"><b>Aseel Aburuqa</b><small>UI/UX Designer · Frontend</small></span><span class="tm-btns"><a class="tm-btn li" href="https://www.linkedin.com/in/aseel-aburuqa-078781425/" target="_blank" rel="noopener" aria-label="Aseel Aburuqa on LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a></span></div><div class="tm me" style="--c:#9fd27a"><span class="tm-av">DA</span><span class="tm-id"><b>Doaa AL Yazji</b><small>QA Engineer · Testing</small></span><span class="tm-btns"><span class="tm-me">me</span></span></div></div>
             </div>
             <ul class="chips"><li>React 19</li><li>Vite</li><li>Express</li><li>libSQL</li><li>QA &amp; testing</li></ul>
             <div class="foot">
@@ -1205,42 +1225,6 @@ html[dir="rtl"] :is(.fe-quote, .fe-sign) { font-family: var(--f-ar); letter-spac
           <div class="reveal"><h4 class="label">Foundations</h4><ul class="chips"><li class="hi">Data structures</li><li class="hi">Algorithms</li><li>OOP</li><li>Clean Architecture</li><li>Databases</li><li>Offline sync</li><li>RTL / i18n</li></ul></div>
           <div class="reveal"><h4 class="label">Tools &amp; languages spoken</h4><ul class="chips"><li>Git</li><li>GitHub</li><li>VS Code</li><li>Android Studio</li><li>SQL Server</li><li>Arabic · native</li><li>English</li></ul></div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PEOPLE -->
-  <section class="block" id="people">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <div><span class="label">Collaborators</span><h2>People I <span class="grad">build with</span></h2></div>
-        <p>Good software is a team sport. These are engineers and designers from Palestine I work and learn alongside.</p>
-      </div>
-      <div class="people">
-        <article class="person reveal" style="--c1:#ff4d6d; --c2:#ff8a4c">
-          <div class="p-top">
-            <div class="p-av">MH</div>
-            <div class="p-id"><h3>Mohammed Hamdan</h3><p class="p-role">Software Engineer · Java · Python · Flutter</p></div>
-          </div>
-          <p class="p-bio">Lead engineer on Gapper. Ships Flutter apps and web platforms used today by pharmacies, cafés and university students.</p>
-          <div class="p-tags"><span>Gapper · Lead</span><span>Full-stack</span></div>
-          <div class="p-links">
-            <a class="p-btn" href="https://mohammed131207.github.io/portfolio/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3Z"/></svg>Portfolio</a>
-            <a class="p-btn li" href="https://www.linkedin.com/in/%D9%85%D8%AD%D9%85%D8%AF-%D8%AD%D9%85%D8%AF%D8%A7%D9%86-0646453b0/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>LinkedIn</a>
-          </div>
-        </article>
-        <article class="person reveal" style="--c1:#8b7bff; --c2:#2fc4d8">
-          <div class="p-top">
-            <div class="p-av">NA</div>
-            <div class="p-id"><h3>Nancy Aburuqa</h3><p class="p-role">Software Engineering Student · Aspiring AI Engineer</p></div>
-          </div>
-          <p class="p-bio">Project manager and product owner on Gapper and ILAF, and solo developer of StudyFlow. Leads projects from the first question to a working prototype.</p>
-          <div class="p-tags"><span>Gapper · PM</span><span>Product owner</span><span>Data · AI</span></div>
-          <div class="p-links">
-            <a class="p-btn" href="https://portfolio.nancyaburuqa.workers.dev/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3Z"/></svg>Portfolio</a>
-            <a class="p-btn li" href="https://www.linkedin.com/in/nancy-aburuqa-4ba072351/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>LinkedIn</a>
-          </div>
-        </article>
       </div>
     </div>
   </section>
@@ -1891,7 +1875,9 @@ html[dir="rtl"] :is(.fe-quote, .fe-sign) { font-family: var(--f-ar); letter-spac
       "Arabic · native": "العربية · اللغة الأم", "English": "الإنجليزية",
       "02 / Team project": "02 / مشروع فريق", "EdTech · Team of 4": "تقنيات تعليم · فريق من 4", "Bridge the gap. Unlock your potential.": "اسدّ الفجوة. أطلق إمكاناتك.",
       "years mapped": "سنوات على الخريطة", "resources": "مصدراً", "screens": "شاشات", "bilingual": "لغتان", "My role": "دوري",
-      "Team · 4 people · tap to open LinkedIn": "الفريق · 4 أشخاص · اضغط لفتح LinkedIn", "QA & testing": "ضمان الجودة والاختبار", "2026 · early version": "2026 · نسخة أولى", "Live demo": "جرّب الموقع",
+      "Team · 4 people": "الفريق · 4 أشخاص", "Lead Software Engineer": "مهندس البرمجيات الرئيسي",
+      "Project Manager · Product Owner": "مديرة المشروع · مالكة المنتج", "UI/UX Designer · Frontend": "مصممة UI/UX · واجهات أمامية",
+      "QA Engineer · Testing": "مهندسة جودة · اختبار", "me": "أنا", "QA & testing": "ضمان الجودة والاختبار", "2026 · early version": "2026 · نسخة أولى", "Live demo": "جرّب الموقع",
       "QA · test run": "اختبار الجودة", "Roadmap prerequisites": "متطلبات خريطة المسار", "Skill steps & tasks": "خطوات المهارات والمهام", "Guest mode": "وضع الضيف",
       "Arabic ⇄ English": "عربي ⇄ إنجليزي", "Mobile layout": "عرض الجوال", "QA Engineer · Testing.": "مهندسة جودة · اختبار.",
       "I tested the screens and user flows in Arabic and English, on desktop and mobile, so every release shipped stable.": "اختبرتُ الشاشات ومسارات المستخدم بالعربية والإنجليزية، على الحاسوب والجوال، ليخرج كل إصدار مستقراً.",
